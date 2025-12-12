@@ -1,0 +1,300 @@
+// QQMusic_DailyCheckin.js
+// 名称: QQ音乐每日签到
+// 作者: DeepSeek
+// 更新时间: 2024-01-20
+// 描述: 自动完成QQ音乐每日签到任务
+// 使用: 添加到Loon的脚本配置，设置定时任务
+
+const QQMUSIC_CHECKIN_URL = 'https://c.y.qq.com/rsc/fcgi-bin/fcg_get_profile_homepage.fcg';
+const QQMUSIC_REWARD_URL = 'https://u.y.qq.com/cgi-bin/musicu.fcg';
+
+// 签到状态存储键名
+const STORAGE_KEY = 'qqmusic_checkin_status';
+
+// 获取Cookie
+function getCookie() {
+    return $request.headers['Cookie'] || $request.headers['cookie'];
+}
+
+// 获取用户信息
+function getUserInfo(cookie) {
+    const params = {
+        ctype: 8,
+        userid: 0,
+        reqtype: 1,
+        reqfrom: 1,
+        outCharset: 'utf-8',
+        format: 'json',
+        g_tk: getGTK(cookie)
+    };
+    
+    const url = `${QQMUSIC_CHECKIN_URL}?${Object.keys(params).map(key => `${key}=${encodeURIComponent(params[key])}`).join('&')}`;
+    
+    return {
+        url: url,
+        headers: {
+            'Cookie': cookie,
+            'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 QQMusic/11.5.5',
+            'Referer': 'https://y.qq.com/'
+        }
+    };
+}
+
+// 计算g_tk值
+function getGTK(cookie) {
+    const p_skey = cookie.match(/p_skey=([^;]+)/);
+    if (!p_skey) return 5381;
+    
+    let hash = 5381;
+    const str = p_skey[1];
+    for (let i = 0; i < str.length; i++) {
+        hash += (hash << 5) + str.charCodeAt(i);
+    }
+    return hash & 0x7fffffff;
+}
+
+// 执行签到
+function doCheckin(cookie) {
+    const body = {
+        "comm": {
+            "ct": "6",
+            "cv": "1000",
+            "uin": getUinFromCookie(cookie)
+        },
+        "req": {
+            "module": "music.task.TaskCenterServer",
+            "method": "CheckIn",
+            "param": {}
+        }
+    };
+    
+    return {
+        url: QQMUSIC_REWARD_URL,
+        headers: {
+            'Cookie': cookie,
+            'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 QQMusic/11.5.5',
+            'Content-Type': 'application/json',
+            'Referer': 'https://y.qq.com/'
+        },
+        body: JSON.stringify(body)
+    };
+}
+
+// 获取成长值签到
+function doVipCheckin(cookie) {
+    const body = {
+        "comm": {
+            "ct": "6",
+            "cv": "1000",
+            "uin": getUinFromCookie(cookie)
+        },
+        "req": {
+            "module": "music.vip.VipCenterServer",
+            "method": "CheckIn",
+            "param": {}
+        }
+    };
+    
+    return {
+        url: QQMUSIC_REWARD_URL,
+        headers: {
+            'Cookie': cookie,
+            'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 QQMusic/11.5.5',
+            'Content-Type': 'application/json',
+            'Referer': 'https://y.qq.com/'
+        },
+        body: JSON.stringify(body)
+    };
+}
+
+// 从Cookie中提取uin
+function getUinFromCookie(cookie) {
+    const match = cookie.match(/uin=(\d+)/);
+    return match ? match[1] : '0';
+}
+
+// 获取任务列表
+function getTaskList(cookie) {
+    const body = {
+        "comm": {
+            "ct": "6",
+            "cv": "1000",
+            "uin": getUinFromCookie(cookie)
+        },
+        "req": {
+            "module": "music.task.TaskCenterServer",
+            "method": "QueryTaskList",
+            "param": {}
+        }
+    };
+    
+    return {
+        url: QQMUSIC_REWARD_URL,
+        headers: {
+            'Cookie': cookie,
+            'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 QQMusic/11.5.5',
+            'Content-Type': 'application/json',
+            'Referer': 'https://y.qq.com/'
+        },
+        body: JSON.stringify(body)
+    };
+}
+
+// 完成任务
+function completeTask(cookie, taskId) {
+    const body = {
+        "comm": {
+            "ct": "6",
+            "cv": "1000",
+            "uin": getUinFromCookie(cookie)
+        },
+        "req": {
+            "module": "music.task.TaskCenterServer",
+            "method": "CompleteTask",
+            "param": {
+                "task_id": taskId
+            }
+        }
+    };
+    
+    return {
+        url: QQMUSIC_REWARD_URL,
+        headers: {
+            'Cookie': cookie,
+            'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 QQMusic/11.5.5',
+            'Content-Type': 'application/json',
+            'Referer': 'https://y.qq.com/'
+        },
+        body: JSON.stringify(body)
+    };
+}
+
+// 主签到函数
+async function main() {
+    try {
+        // 从持久化存储获取cookie
+        let cookie = $persistentStore.read('QQMusicCookie');
+        
+        if (!cookie) {
+            $notification.post('QQ音乐签到', '失败', '未找到Cookie，请先获取Cookie');
+            return;
+        }
+        
+        console.log('开始QQ音乐签到...');
+        
+        // 1. 执行普通签到
+        let checkinResult = await sendRequest(doCheckin(cookie));
+        
+        if (checkinResult && checkinResult.code === 0) {
+            console.log('普通签到成功');
+            
+            // 解析签到奖励
+            if (checkinResult.req && checkinResult.req.data) {
+                const reward = checkinResult.req.data.reward || {};
+                let message = `签到成功！`;
+                
+                if (reward.exp) {
+                    message += ` 经验+${reward.exp}`;
+                }
+                if (reward.point) {
+                    message += ` 积分+${reward.point}`;
+                }
+                if (reward.vip_point) {
+                    message += ` 成长值+${reward.vip_point}`;
+                }
+                
+                // 保存签到状态
+                const today = new Date().toDateString();
+                $persistentStore.write(today, STORAGE_KEY);
+                
+                $notification.post('QQ音乐签到', '成功', message);
+            }
+        } else {
+            console.log('普通签到可能已签过');
+        }
+        
+        // 2. 执行VIP签到（如果有VIP）
+        await $wait(1000); // 等待1秒
+        let vipCheckinResult = await sendRequest(doVipCheckin(cookie));
+        
+        if (vipCheckinResult && vipCheckinResult.code === 0) {
+            console.log('VIP签到成功');
+            if (vipCheckinResult.req && vipCheckinResult.req.data) {
+                const vipReward = vipCheckinResult.req.data.reward || {};
+                if (vipReward.vip_point) {
+                    $notification.post('QQ音乐VIP签到', '成功', `成长值+${vipReward.vip_point}`);
+                }
+            }
+        }
+        
+        // 3. 获取并完成任务
+        await $wait(1000);
+        let taskListResult = await sendRequest(getTaskList(cookie));
+        
+        if (taskListResult && taskListResult.code === 0 && taskListResult.req && taskListResult.req.data) {
+            const tasks = taskListResult.req.data.task_list || [];
+            let completedTasks = 0;
+            
+            for (let task of tasks) {
+                // 检查是否可完成（状态为1表示可完成）
+                if (task.status === 1 && task.task_id) {
+                    await $wait(500);
+                    let taskResult = await sendRequest(completeTask(cookie, task.task_id));
+                    
+                    if (taskResult && taskResult.code === 0) {
+                        completedTasks++;
+                        console.log(`完成任务: ${task.task_name}`);
+                    }
+                }
+            }
+            
+            if (completedTasks > 0) {
+                $notification.post('QQ音乐任务', '完成', `完成了${completedTasks}个日常任务`);
+            }
+        }
+        
+        console.log('QQ音乐签到流程结束');
+        
+    } catch (error) {
+        console.log(`签到失败: ${error}`);
+        $notification.post('QQ音乐签到', '失败', error.message || '未知错误');
+    }
+}
+
+// 发送HTTP请求
+function sendRequest(options) {
+    return new Promise((resolve, reject) => {
+        $httpClient.post(options, function(error, response, data) {
+            if (error) {
+                reject(error);
+            } else {
+                try {
+                    const result = JSON.parse(data);
+                    resolve(result);
+                } catch (e) {
+                    resolve(data);
+                }
+            }
+        });
+    });
+}
+
+// 检查今天是否已签到
+function checkTodaySigned() {
+    const lastDate = $persistentStore.read(STORAGE_KEY);
+    const today = new Date().toDateString();
+    return lastDate === today;
+}
+
+// 脚本入口
+if (typeof $argument !== 'undefined' && $argument === 'manual') {
+    // 手动触发
+    main();
+} else {
+    // 定时任务，检查是否已签到
+    if (!checkTodaySigned()) {
+        main();
+    } else {
+        console.log('今天已经签过了');
+    }
+}
