@@ -2,7 +2,7 @@
  *
 
 [rewrite_local]
-xhlld.*\.shop\/view\/getVideoInfo\/\d+ url script-response-body https://raw.githubusercontent.com/Yu9191/Rewrite/refs/heads/main/xiaohuli.js
+
 # 微信小程序净化
 ^https?:\/\/hdgateway\.zto\.com\/getApolloConfig reject-dict
 ^https?:\/\/hdgateway\.zto\.com\/track reject-dict
