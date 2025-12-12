@@ -21,22 +21,22 @@ xhlld.*\.shop\/view\/getVideoInfo\/\d+ url script-response-body https://raw.gith
 # 首页随机弹窗
 ^https?:\/\/intellicc\.bcs\.cmbchina\.com\/Edge\/api\/mlife\.intelli\.adrender\.api\.AdWork\/getAdsBySlotId reject-dict
 # > 腾讯广告
-# ^https?:\/\/btrace\.qq\.com reject-200
-# ^https?:\/\/api2\.helper\.qq\.com\/game\/buttons reject-img
-# ^https?:\/\/lives\.l\.qq\.com\/livemsg\?sdtfrom= reject-img
-# ^https?:\/\/imgcache\.qq\.com\/qqlive\/ reject-img
-# ^https?:\/\/mtteve\.beacon\.qq\.com\/analytics reject-img
-# ^https?:\/\/vv\.video\.qq\.com\/getvmind\? reject-200
-# ^https?:\/\/3gimg\.qq\.com\/tencentMapTouch\/app\/activity\/ reject-200
-# ^https?:\/\/3gimg\.qq\.com\/tencentMapTouch\/splash\/ reject-200
-# ^https?:\/\/y\.gtimg\.cn\/music\/.*?_Ad/\d+\.png reject-img
-# ^https?:\/\/splashqqlive\.gtimg\.com\/website\/\d{6} reject-img
-# ^https?:\/\/qzonestyle\.gtimg\.cn\/qzone\/biz\/gdt\/mob\/sdk\/ios\/v2\/ reject-img
-# ^https?:\/\/discuz\.gtimg\.cn\/cloud\/scripts\/discuz_tips\.js reject-img
-# ^https?:\/\/bla\.gtimg\.com\/qqlive\/\d{6}.+?\.png reject-img
-# ^https?:\/\/mmgr\.gtimg\.com\/gjsmall\/qiantu\/upload\/ reject-img
-# ^https?:\/\/mmgr\.gtimg\.com\/gjsmall\/qqpim\/public\/ios\/splash\/.+?\/\d{4}_\d{4} reject-img
-# ^https?://bk\.bingo\.qq\.com/bk/crx/data/videoAd.*$ reject-dict
+^https?:\/\/btrace\.qq\.com reject-200
+^https?:\/\/api2\.helper\.qq\.com\/game\/buttons reject-img
+^https?:\/\/lives\.l\.qq\.com\/livemsg\?sdtfrom= reject-img
+^https?:\/\/imgcache\.qq\.com\/qqlive\/ reject-img
+^https?:\/\/mtteve\.beacon\.qq\.com\/analytics reject-img
+^https?:\/\/vv\.video\.qq\.com\/getvmind\? reject-200
+^https?:\/\/3gimg\.qq\.com\/tencentMapTouch\/app\/activity\/ reject-200
+^https?:\/\/3gimg\.qq\.com\/tencentMapTouch\/splash\/ reject-200
+^https?:\/\/y\.gtimg\.cn\/music\/.*?_Ad/\d+\.png reject-img
+^https?:\/\/splashqqlive\.gtimg\.com\/website\/\d{6} reject-img
+^https?:\/\/qzonestyle\.gtimg\.cn\/qzone\/biz\/gdt\/mob\/sdk\/ios\/v2\/ reject-img
+^https?:\/\/discuz\.gtimg\.cn\/cloud\/scripts\/discuz_tips\.js reject-img
+^https?:\/\/bla\.gtimg\.com\/qqlive\/\d{6}.+?\.png reject-img
+^https?:\/\/mmgr\.gtimg\.com\/gjsmall\/qiantu\/upload\/ reject-img
+^https?:\/\/mmgr\.gtimg\.com\/gjsmall\/qqpim\/public\/ios\/splash\/.+?\/\d{4}_\d{4} reject-img
+^https?://bk\.bingo\.qq\.com/bk/crx/data/videoAd.*$ reject-dict
 [mitm]
 hostname = *.xhlld076.shop, *.xhlsc006.shop
 # 中信银行
