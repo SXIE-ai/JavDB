@@ -1,25 +1,20 @@
 /*
  *
 
-
-
-# 微信小程序净化
+[rewrite_local]
+自用去广告
+#广告
+xhlld.*\.shop\/view\/(adList|getVideoInfoAdList) url reject
 ^https?:\/\/hdgateway\.zto\.com\/getApolloConfig reject-dict
 ^https?:\/\/hdgateway\.zto\.com\/track reject-dict
 ^https?:\/\/hdgateway\.zto\.com\/getAdInfo reject-dict
 ^https?:\/\/hdgateway\.zto\.com\/listJumperShow reject-dict
-
 ^https?:\/\/wap.bank\.ecitic\.com:6443\/NMBFOServer\/cbframework\.do\?act=CUBEPAGEDATA reject-200
-
 ^https:\/\/imcs\.citicbank\.com\/cloud\/([a-fA-F0-9]{32})\.(jpg|png) reject
 ^https?:\/\/imcs\.citicbank\.com\/cloud\/.+(1125.+2436|1242.+2688|750.+1638|563.+1218) reject-dict
-
 ^https?:\/\/mbasecc\.(bas|bcs)\.cmbchina\.com\/Edge\/api\/mlife\.clientface\.clientservice\.api\.advertiseService\/preCacheAdvertiseSec reject-dict
-
 ^https?:\/\/intellicc\.bas\.cmbchina\.com\/Edge\/api\/mlife\.intelli\.render\.api\.render\/getDynamicDataSec reject
-
 ^https?:\/\/intellicc\.bcs\.cmbchina\.com\/Edge\/api\/mlife\.intelli\.adrender\.api\.AdWork\/getAdsBySlotId reject-dict
-
 ^https?:\/\/btrace\.qq\.com reject-200
 ^https?:\/\/api2\.helper\.qq\.com\/game\/buttons reject-img
 ^https?:\/\/lives\.l\.qq\.com\/livemsg\?sdtfrom= reject-img
@@ -36,11 +31,6 @@
 ^https?:\/\/mmgr\.gtimg\.com\/gjsmall\/qiantu\/upload\/ reject-img
 ^https?:\/\/mmgr\.gtimg\.com\/gjsmall\/qqpim\/public\/ios\/splash\/.+?\/\d{4}_\d{4} reject-img
 ^https?://bk\.bingo\.qq\.com/bk/crx/data/videoAd.*$ reject-dict
+
 [mitm]
-hostname = *.xhlld076.shop, *.xhlsc006.shop
-# 中信银行
-hostname = *.wap.bank.ecitic.com, *.imcs.citicbank.com
-# > 掌上生活
-hostname = *.mbasecc.bas.cmbchina.com, *.mbasecc.bcs.cmbchina.com, *.intellicc.bas.cmbchina.com, *.intellicc.bcs.cmbchina.com
-# > 腾讯广告
-hostname = *.btrace.qq.com, *.api2.helper.qq.com, *.beacon.qq.com, mi.gdt.qq.com, *.lives.l.qq.com, *.imgcache.qq.com, *.mtteve.beacon.qq.com, *.vv.video.qq.com, *.qt.qq.com, *.3gimg.qq.com, *.y.gtimg.cn, *.splashqqlive.gtimg.com, *.qzonestyle.gtimg.cn, *.discuz.gtimg.cn, *.bla.gtimg.com, *.mmgr.gtimg.com, *.bk.bingo.qq.com
+hostname = wap.bank.ecitic.com, imcs.citicbank.com, mbasecc.bas.cmbchina.com, mbasecc.bcs.cmbchina.com, intellicc.bas.cmbchina.com, intellicc.bcs.cmbchina.com, btrace.qq.com, api2.helper.qq.com, *.beacon.qq.com, mi.gdt.qq.com, lives.l.qq.com, imgcache.qq.com, mtteve.beacon.qq.com, vv.video.qq.com, qt.qq.com, 3gimg.qq.com, y.gtimg.cn, splashqqlive.gtimg.com, qzonestyle.gtimg.cn, discuz.gtimg.cn, bla.gtimg.com, mmgr.gtimg.com, bk.bingo.qq.com
