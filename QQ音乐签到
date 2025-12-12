@@ -1,9 +1,11 @@
-// QQMusic_DailyCheckin.js
-// 名称: QQ音乐每日签到
-// 作者: DeepSeek
-// 更新时间: 2024-01-20
-// 描述: 自动完成QQ音乐每日签到任务
-// 使用: 添加到Loon的脚本配置，设置定时任务
+/*
+ *
+
+#!name=QQ音乐签到
+#!desc=自动完成QQ音乐每日签到任务
+#!author=XIE-ai
+#!homepage=https://github.com/SXIE-ai/Loon
+
 
 const QQMUSIC_CHECKIN_URL = 'https://c.y.qq.com/rsc/fcgi-bin/fcg_get_profile_homepage.fcg';
 const QQMUSIC_REWARD_URL = 'https://u.y.qq.com/cgi-bin/musicu.fcg';
