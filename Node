@@ -1,0 +1,2 @@
+🇭🇰HK_26 = Shadowsocks,202.162.109.229,8388,chacha20-ietf,"asd123456",fast-open=false,udp=false,block-quic=false
+🇺🇸CA_23 = Shadowsocks,23.22.182.151,443,aes-256-cfb,"amazonskr05",fast-open=false,udp=false,block-quic=false
