@@ -1,6 +1,0 @@
-# 完整配置示例：
-[Panel]
-server-info-pure = script-name=server-info-pure, title=节点详情(Pure), content=点击查询节点信息, icon=checkmark.shield.fill.system, update-interval=0
-
-[Script]
-server-info-pure = type=generic, script-path=https://ddgksf2013.top/scripts/server-info-pure.js, argument=title=节点详情(Pure)&icon=checkmark.shield.fill.system&content=点击查询, timeout=10
