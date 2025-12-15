@@ -3,9 +3,9 @@ const IPPURE_URL = "https://my.ippure.com/v1/info";
 const IP_QUERY_APIS = [
   "https://api.ipify.org?format=json",           // 简单直接的 API
   "https://api64.ipify.org?format=json",         // IPv6 兼容
-  "http://ip-api.com/json?lang=zh-CN",           // 原服务
   "https://ipapi.co/json/",                      // 备用服务
-  "https://api.myip.com"                         // 备用服务
+  "https://api.myip.com",                        // 备用服务
+  "https://api.ip.sb/json"                       // 备用服务
 ];
 
 // 从环境参数获取节点名
@@ -75,70 +75,107 @@ function gradeIpapi(j) {
 
 // ipapi.is 判断 IP 类型
 function ipapiHostingText(j) {
-  if (!j) return "IP类型（ipapi）：未知（获取失败）";
+  if (!j) return "IP类型：未知（获取失败）";
   
   const isDc = j.is_datacenter === true;
   const isMobile = j.is_mobile === true;
   const asnType = String(j.asn?.type || "").toLowerCase();
   const companyType = String(j.company?.type || "").toLowerCase();
   
-  if (isMobile) return `IP类型（ipapi）：📱 蜂窝移动网络（可能是）`;
-  if (asnType === "hosting" || companyType === "hosting") return `IP类型（ipapi）：🏢 托管服务器（可能是）`;
-  if (asnType === "isp" || companyType === "isp") return `IP类型（ipapi）：🏠 家庭宽带（可能是）`;
-  if (asnType === "business" || companyType === "business") return `IP类型（ipapi）：🏬 商业宽带（可能是）`;
-  if (asnType === "education" || companyType === "education") return `IP类型（ipapi）：🎓 教育网络（可能是）`;
-  if (asnType === "government" || companyType === "government") return `IP类型（ipapi）：🏛️ 政府网络（可能是）`;
+  if (isMobile) return `IP类型：📱 蜂窝移动网络`;
+  if (asnType === "hosting" || companyType === "hosting") return `IP类型：🏢 托管服务器`;
+  if (asnType === "isp" || companyType === "isp") return `IP类型：🏠 家庭宽带`;
+  if (asnType === "business" || companyType === "business") return `IP类型：🏬 商业宽带`;
+  if (asnType === "education" || companyType === "education") return `IP类型：🎓 教育网络`;
+  if (asnType === "government" || companyType === "government") return `IP类型：🏛️ 政府网络`;
   
   const typeInfo = asnType || companyType || "未知";
-  return `IP类型（ipapi）：❓ ${typeInfo}`;
+  return `IP类型：❓ ${typeInfo}`;
 }
 
-// DB-IP - 抓网页解析
-function gradeDbip(html) {
-  if (!html) return { sev: 2, text: "DB-IP：获取失败" };
-  const riskTextMatch = html.match(/Estimated threat level for this IP address is\s*<span[^>]*>\s*([^<\s]+)\s*</i);
-  const riskText = (riskTextMatch ? riskTextMatch[1] : "").toLowerCase();
-  if (!riskText) return { sev: 2, text: "DB-IP：获取失败" };
-
-  if (riskText === "high") return { sev: 3, text: "DB-IP：⚠️ 高风险" };
-  if (riskText === "medium") return { sev: 1, text: "DB-IP：🔶 中风险" };
-  if (riskText === "low") return { sev: 0, text: "DB-IP：✅ 低风险" };
-  return { sev: 2, text: `DB-IP：${riskText}` };
-}
-
-// Scamalytics - 抓网页解析
-function gradeScamalytics(html) {
-  if (!html) return { sev: 2, text: "Scamalytics：获取失败" };
-  const scoreMatch = html.match(/Fraud\s*Score[:\s]*(\d+)/i) 
-    || html.match(/class="score"[^>]*>(\d+)/i)
-    || html.match(/"score"\s*:\s*(\d+)/i);
-  if (!scoreMatch) return { sev: 2, text: "Scamalytics：获取失败" };
-  
-  const s = toInt(scoreMatch[1]);
-  if (s === null) return { sev: 2, text: "Scamalytics：获取失败" };
-  if (s >= 90) return { sev: 4, text: `Scamalytics：🛑 极高风险 (${s})` };
-  if (s >= 60) return { sev: 3, text: `Scamalytics：⚠️ 高风险 (${s})` };
-  if (s >= 20) return { sev: 1, text: `Scamalytics：🔶 中风险 (${s})` };
-  return { sev: 0, text: `Scamalytics：✅ 低风险 (${s})` };
+// Scamalytics - 抓网页解析（添加超时和重试）
+async function gradeScamalytics(ip) {
+  try {
+    const { data } = await httpGet(`https://scamalytics.com/ip/${encodeURIComponent(ip)}`);
+    if (!data) return { sev: 2, text: "Scamalytics：获取失败" };
+    
+    const html = String(data);
+    const scoreMatch = html.match(/Fraud\s*Score[:\s]*(\d+)/i) 
+      || html.match(/class="score"[^>]*>(\d+)/i)
+      || html.match(/"score"\s*:\s*(\d+)/i);
+    
+    if (!scoreMatch) return { sev: 2, text: "Scamalytics：无评分数据" };
+    
+    const s = toInt(scoreMatch[1]);
+    if (s === null) return { sev: 2, text: "Scamalytics：数据异常" };
+    if (s >= 90) return { sev: 4, text: `Scamalytics：🛑 极高风险 (${s})` };
+    if (s >= 60) return { sev: 3, text: `Scamalytics：⚠️ 高风险 (${s})` };
+    if (s >= 20) return { sev: 1, text: `Scamalytics：🔶 中风险 (${s})` };
+    return { sev: 0, text: `Scamalytics：✅ 低风险 (${s})` };
+  } catch (error) {
+    return { sev: 2, text: "Scamalytics：服务不可用" };
+  }
 }
 
 // IPWhois - 免费 API
-function gradeIpwhois(j) {
-  if (!j || !j.security) return { sev: 2, text: "IPWhois：获取失败" };
-  
-  const sec = j.security;
-  const items = [];
-  if (sec.proxy === true) items.push("代理");
-  if (sec.tor === true) items.push("Tor网络");
-  if (sec.vpn === true) items.push("VPN");
-  if (sec.hosting === true) items.push("托管服务");
-  
-  if (items.length === 0) {
-    return { sev: 0, text: "IPWhois：✅ 低风险（无标记）" };
+async function gradeIpwhois(ip) {
+  try {
+    const { data } = await httpGet(`https://ipwhois.io/widget?ip=${encodeURIComponent(ip)}&lang=en`, {
+      "Referer": "https://ipwhois.io/",
+      "Accept": "*/*",
+    });
+    
+    const j = safeJsonParse(data);
+    if (!j || !j.security) return { sev: 2, text: "IPWhois：获取失败" };
+    
+    const sec = j.security;
+    const items = [];
+    if (sec.proxy === true) items.push("代理");
+    if (sec.tor === true) items.push("Tor网络");
+    if (sec.vpn === true) items.push("VPN");
+    if (sec.hosting === true) items.push("托管服务");
+    
+    if (items.length === 0) {
+      return { sev: 0, text: "IPWhois：✅ 低风险（无标记）" };
+    }
+    const sev = items.includes("Tor网络") ? 3 : items.length >= 2 ? 2 : 1;
+    const label = sev >= 3 ? "⚠️ 高风险" : sev >= 2 ? "🔶 较高风险" : "🔶 有标记";
+    return { sev, text: `IPWhois：${label} (${items.join("/")})` };
+  } catch (error) {
+    return { sev: 2, text: "IPWhois：服务不可用" };
   }
-  const sev = items.includes("Tor网络") ? 3 : items.length >= 2 ? 2 : 1;
-  const label = sev >= 3 ? "⚠️ 高风险" : sev >= 2 ? "🔶 较高风险" : "🔶 有标记";
-  return { sev, text: `IPWhois：${label} (${items.join("/")})` };
+}
+
+// ipdata.co - 替代服务
+async function gradeIpdata(ip) {
+  try {
+    const { data } = await httpGet(`https://api.ipdata.co/${ip}?api-key=test`);
+    const j = safeJsonParse(data);
+    if (!j || !j.threat) return { sev: 2, text: "ipdata：无威胁数据" };
+    
+    const threat = j.threat;
+    const isThreat = threat.is_threat === true;
+    const isTor = threat.is_tor === true;
+    const isProxy = threat.is_proxy === true;
+    const isAnonymous = threat.is_anonymous === true;
+    const isKnownAttacker = threat.is_known_attacker === true;
+    
+    if (isThreat || isTor || isKnownAttacker) {
+      const items = [];
+      if (isTor) items.push("Tor");
+      if (isProxy) items.push("代理");
+      if (isKnownAttacker) items.push("已知攻击者");
+      return { sev: 3, text: `ipdata：⚠️ 高风险 (${items.join("/")})` };
+    }
+    
+    if (isAnonymous || isProxy) {
+      return { sev: 1, text: `ipdata：🔶 有标记 (匿名/代理)` };
+    }
+    
+    return { sev: 0, text: "ipdata：✅ 低风险" };
+  } catch (error) {
+    return { sev: 2, text: "ipdata：服务不可用" };
+  }
 }
 
 function flagEmoji(code) {
@@ -151,70 +188,55 @@ function flagEmoji(code) {
 
 // 各家 API 请求
 async function fetchIpapi(ip) {
-  const { data } = await httpGet(`https://api.ipapi.is/?q=${encodeURIComponent(ip)}`);
-  return safeJsonParse(data);
-}
-
-async function fetchDbipHtml(ip) {
-  const { data } = await httpGet(`https://db-ip.com/${encodeURIComponent(ip)}`);
-  return String(data);
-}
-
-async function fetchScamalyticsHtml(ip) {
-  const { data } = await httpGet(`https://scamalytics.com/ip/${encodeURIComponent(ip)}`);
-  return String(data);
-}
-
-async function fetchIpwhois(ip) {
-  const { data } = await httpGet(`https://ipwhois.io/widget?ip=${encodeURIComponent(ip)}&lang=en`, {
-    "Referer": "https://ipwhois.io/",
-    "Accept": "*/*",
-  });
-  return safeJsonParse(data);
+  try {
+    const { data } = await httpGet(`https://api.ipapi.is/?q=${encodeURIComponent(ip)}`);
+    return safeJsonParse(data);
+  } catch (error) {
+    return null;
+  }
 }
 
 // 改进的 IP 获取函数 - 尝试多个 API
 async function getCurrentIP() {
-  const apiPromises = IP_QUERY_APIS.map(url => 
-    httpGet(url).then(({ data }) => {
-      const json = safeJsonParse(data);
-      // 不同 API 返回格式不同
-      if (json) {
-        return json.ip || json.ip_addr || json.query;
-      }
-      return null;
-    }).catch(() => null)
-  );
-  
-  // 尝试所有 API，返回第一个成功的
-  for (let i = 0; i < apiPromises.length; i++) {
+  // 尝试所有 API
+  for (const url of IP_QUERY_APIS) {
     try {
-      const ip = await apiPromises[i];
-      if (ip && typeof ip === 'string' && ip.includes('.')) {
-        return ip;
+      const { data } = await httpGet(url);
+      const json = safeJsonParse(data);
+      if (json) {
+        const ip = json.ip || json.ip_addr || json.query || json.ip_string;
+        if (ip && typeof ip === 'string' && ip.includes('.')) {
+          return ip.trim();
+        }
+      }
+      // 如果是纯文本响应
+      if (typeof data === 'string' && data.includes('.')) {
+        const ipMatch = data.match(/\b(?:\d{1,3}\.){3}\d{1,3}\b/);
+        if (ipMatch) return ipMatch[0];
       }
     } catch (_) {
       continue;
     }
   }
   
-  // 如果所有 API 都失败，尝试纯文本 API
-  try {
-    const { data } = await httpGet("https://api.ipify.org");
-    if (data && typeof data === 'string' && data.includes('.')) {
-      return data.trim();
-    }
-  } catch (_) {
-    // 继续尝试下一个
-  }
+  // 纯文本 API 备用
+  const textApis = [
+    "https://api.ipify.org",
+    "http://ifconfig.me/ip",
+    "https://icanhazip.com",
+    "http://checkip.amazonaws.com"
+  ];
   
-  try {
-    const { data } = await httpGet("http://ifconfig.me/ip");
-    if (data && typeof data === 'string' && data.includes('.')) {
-      return data.trim();
+  for (const url of textApis) {
+    try {
+      const { data } = await httpGet(url);
+      if (data && typeof data === 'string') {
+        const ipMatch = data.match(/\b(?:\d{1,3}\.){3}\d{1,3}\b/);
+        if (ipMatch) return ipMatch[0];
+      }
+    } catch (_) {
+      continue;
     }
-  } catch (_) {
-    // 最后尝试
   }
   
   return null;
@@ -227,93 +249,109 @@ async function getCurrentIP() {
   if (!ip) {
     $done({ 
       title: "IP 纯净度检测", 
-      content: "❌ 获取 IPv4 地址失败\n\n可能原因：\n1. 网络连接问题\n2. 所有查询服务都不可用\n3. 当前节点可能无法访问外部网络",
+      content: "❌ 获取 IP 地址失败\n\n可能原因：\n1. 网络连接异常\n2. 当前节点无外网访问权限\n3. 所有查询服务暂时不可用",
       icon: "network.slash" 
     });
     return;
   }
 
-  let ippureFraudScore = null;
-  try {
-    const { data } = await httpGet(IPPURE_URL);
-    const base = safeJsonParse(data);
-    if (base) ippureFraudScore = base.fraudScore;
-  } catch (_) {}
-
-  const tasks = {
-    ipapi: fetchIpapi(ip),
-    dbipHtml: fetchDbipHtml(ip),
-    scamHtml: fetchScamalyticsHtml(ip),
-    ipwhois: fetchIpwhois(ip),
-  };
-
-  const results = await Promise.allSettled(
-    Object.keys(tasks).map((k) => tasks[k].then((v) => [k, v]))
-  );
-
-  const ok = {};
-  for (const r of results) {
-    if (r.status === "fulfilled") {
-      const [k, v] = r.value;
-      ok[k] = v;
-    }
-  }
-
-  const ipapiData = ok.ipapi || {};
-  const asnText = ipapiData.asn?.asn ? `AS${ipapiData.asn.asn} ${ipapiData.asn.org || ""}`.trim() : "-";
-  const countryCode = ipapiData.location?.country_code || "";
-  const country = ipapiData.location?.country || "";
-  const city = ipapiData.location?.city || "";
-  const flag = flagEmoji(countryCode);
-
-  const hostingLine = ipapiHostingText(ok.ipapi);
+  // 并行获取所有数据
+  const [
+    ipapiData,
+    scamResult,
+    ipwhoisResult,
+    ipdataResult,
+    ippureScore
+  ] = await Promise.allSettled([
+    fetchIpapi(ip),
+    gradeScamalytics(ip),
+    gradeIpwhois(ip),
+    gradeIpdata(ip),
+    (async () => {
+      try {
+        const { data } = await httpGet(IPPURE_URL);
+        const base = safeJsonParse(data);
+        return base ? base.fraudScore : null;
+      } catch (_) {
+        return null;
+      }
+    })()
+  ]);
 
   const grades = [];
-  grades.push(gradeIppure(ippureFraudScore));
-  grades.push(gradeIpapi(ok.ipapi));
-  grades.push(gradeScamalytics(ok.scamHtml));
-  grades.push(gradeDbip(ok.dbipHtml));
-  grades.push(gradeIpwhois(ok.ipwhois));
+  
+  // IPPURE 评分
+  if (ippureScore.status === "fulfilled" && ippureScore.value !== null) {
+    grades.push(gradeIppure(ippureScore.value));
+  } else {
+    grades.push({ sev: 2, text: "IPPure：服务不可用" });
+  }
+  
+  // ipapi 评分
+  if (ipapiData.status === "fulfilled" && ipapiData.value) {
+    grades.push(gradeIpapi(ipapiData.value));
+    
+    // 从 ipapi 获取位置信息
+    const ipapiJson = ipapiData.value;
+    const asnText = ipapiJson.asn?.asn ? `AS${ipapiJson.asn.asn} ${ipapiJson.asn.org || ""}`.trim() : "未知";
+    const countryCode = ipapiJson.location?.country_code || "";
+    const country = ipapiJson.location?.country || "未知";
+    const city = ipapiJson.location?.city || "未知";
+    const flag = flagEmoji(countryCode);
+    const hostingLine = ipapiHostingText(ipapiJson);
+    
+    var locationInfo = { asnText, flag, country, city, hostingLine };
+  } else {
+    grades.push({ sev: 2, text: "ipapi：服务不可用" });
+    var locationInfo = { 
+      asnText: "未知", 
+      flag: "", 
+      country: "未知", 
+      city: "未知", 
+      hostingLine: "IP类型：未知" 
+    };
+  }
+  
+  // 其他服务评分
+  if (scamResult.status === "fulfilled") grades.push(scamResult.value);
+  if (ipwhoisResult.status === "fulfilled") grades.push(ipwhoisResult.value);
+  if (ipdataResult.status === "fulfilled") grades.push(ipdataResult.value);
 
   const maxSev = grades.reduce((m, g) => Math.max(m, g.sev ?? 2), 0);
   const meta = severityMeta(maxSev);
 
+  const riskLines = grades.map((g) => g.text).join("\n");
+
+  // 收集风险因子
   const factorParts = [];
-  if (ok.ipapi) {
+  if (ipapiData.status === "fulfilled" && ipapiData.value) {
+    const j = ipapiData.value;
     const items = [];
-    if (ok.ipapi.is_proxy === true) items.push("代理");
-    if (ok.ipapi.is_tor === true) items.push("Tor网络");
-    if (ok.ipapi.is_vpn === true) items.push("VPN");
-    if (ok.ipapi.is_datacenter === true) items.push("数据中心");
-    if (ok.ipapi.is_abuser === true) items.push("滥用者");
-    if (ok.ipapi.is_crawler === true) items.push("爬虫");
+    if (j.is_proxy === true) items.push("代理");
+    if (j.is_tor === true) items.push("Tor网络");
+    if (j.is_vpn === true) items.push("VPN");
+    if (j.is_datacenter === true) items.push("数据中心");
+    if (j.is_abuser === true) items.push("滥用者");
+    if (j.is_crawler === true) items.push("爬虫");
     if (items.length) factorParts.push(`ipapi 标记：${items.join("/")}`);
   }
-  if (ok.ipwhois && ok.ipwhois.security) {
-    const sec = ok.ipwhois.security;
-    const items = [];
-    if (sec.proxy === true) items.push("代理");
-    if (sec.tor === true) items.push("Tor网络");
-    if (sec.vpn === true) items.push("VPN");
-    if (sec.hosting === true) items.push("托管服务");
-    if (items.length) factorParts.push(`IPWhois 标记：${items.join("/")}`);
-  }
+  
   const factorText = factorParts.length ? `\n\n——风险标记详情——\n${factorParts.join("\n")}` : "";
-
-  const riskLines = grades.map((g) => g.text).join("\n");
 
   $done({
     title: "节点 IP 风险检测报告",
     content:
 `✅ IP地址获取成功
 🌐 IP地址：${ip}
-📡 ASN信息：${asnText}
-📍 地理位置：${flag} ${country} ${city}
-🏷️ ${hostingLine}
+📡 ASN信息：${locationInfo.asnText}
+📍 地理位置：${locationInfo.flag} ${locationInfo.country} ${locationInfo.city}
+🏷️ ${locationInfo.hostingLine}
 🖥️ 当前节点：${nodeName || "未指定"}
 
 ——多源风险评分——
-${riskLines}${factorText}`,
+${riskLines}${factorText}
+
+📊 综合评级：${maxSev >= 4 ? "🛑 极高风险" : maxSev >= 3 ? "⚠️ 高风险" : maxSev >= 2 ? "🔶 中等风险" : "✅ 低风险"}`,
     icon: meta.icon,
     "title-color": meta.color,
   });
