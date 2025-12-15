@@ -1,5 +1,12 @@
 const IPPURE_URL = "https://my.ippure.com/v1/info";
-const IPV4_API = "http://ip-api.com/json?lang=zh-CN";
+// 使用多个备选 IP 查询服务
+const IP_QUERY_APIS = [
+  "https://api.ipify.org?format=json",           // 简单直接的 API
+  "https://api64.ipify.org?format=json",         // IPv6 兼容
+  "http://ip-api.com/json?lang=zh-CN",           // 原服务
+  "https://ipapi.co/json/",                      // 备用服务
+  "https://api.myip.com"                         // 备用服务
+];
 
 // 从环境参数获取节点名
 const nodeName = $environment.params.node;
@@ -47,7 +54,7 @@ function gradeIppure(score) {
 // ipapi.is - 免费直接可用
 function gradeIpapi(j) {
   if (!j || !j.company) return { sev: 2, text: "ipapi：获取失败" };
-  
+  
   const abuserScoreText = j.company.abuser_score;
   if (!abuserScoreText || typeof abuserScoreText !== "string") {
     return { sev: 2, text: "ipapi：无评分" };
@@ -69,19 +76,19 @@ function gradeIpapi(j) {
 // ipapi.is 判断 IP 类型
 function ipapiHostingText(j) {
   if (!j) return "IP类型（ipapi）：未知（获取失败）";
-  
+  
   const isDc = j.is_datacenter === true;
   const isMobile = j.is_mobile === true;
   const asnType = String(j.asn?.type || "").toLowerCase();
   const companyType = String(j.company?.type || "").toLowerCase();
-  
+  
   if (isMobile) return `IP类型（ipapi）：📱 蜂窝移动网络（可能是）`;
   if (asnType === "hosting" || companyType === "hosting") return `IP类型（ipapi）：🏢 托管服务器（可能是）`;
   if (asnType === "isp" || companyType === "isp") return `IP类型（ipapi）：🏠 家庭宽带（可能是）`;
   if (asnType === "business" || companyType === "business") return `IP类型（ipapi）：🏬 商业宽带（可能是）`;
   if (asnType === "education" || companyType === "education") return `IP类型（ipapi）：🎓 教育网络（可能是）`;
   if (asnType === "government" || companyType === "government") return `IP类型（ipapi）：🏛️ 政府网络（可能是）`;
-  
+  
   const typeInfo = asnType || companyType || "未知";
   return `IP类型（ipapi）：❓ ${typeInfo}`;
 }
@@ -102,11 +109,11 @@ function gradeDbip(html) {
 // Scamalytics - 抓网页解析
 function gradeScamalytics(html) {
   if (!html) return { sev: 2, text: "Scamalytics：获取失败" };
-  const scoreMatch = html.match(/Fraud\s*Score[:\s]*(\d+)/i) 
+  const scoreMatch = html.match(/Fraud\s*Score[:\s]*(\d+)/i) 
     || html.match(/class="score"[^>]*>(\d+)/i)
     || html.match(/"score"\s*:\s*(\d+)/i);
   if (!scoreMatch) return { sev: 2, text: "Scamalytics：获取失败" };
-  
+  
   const s = toInt(scoreMatch[1]);
   if (s === null) return { sev: 2, text: "Scamalytics：获取失败" };
   if (s >= 90) return { sev: 4, text: `Scamalytics：🛑 极高风险 (${s})` };
@@ -118,14 +125,14 @@ function gradeScamalytics(html) {
 // IPWhois - 免费 API
 function gradeIpwhois(j) {
   if (!j || !j.security) return { sev: 2, text: "IPWhois：获取失败" };
-  
+  
   const sec = j.security;
   const items = [];
   if (sec.proxy === true) items.push("代理");
   if (sec.tor === true) items.push("Tor网络");
   if (sec.vpn === true) items.push("VPN");
   if (sec.hosting === true) items.push("托管服务");
-  
+  
   if (items.length === 0) {
     return { sev: 0, text: "IPWhois：✅ 低风险（无标记）" };
   }
@@ -166,17 +173,63 @@ async function fetchIpwhois(ip) {
   return safeJsonParse(data);
 }
 
+// 改进的 IP 获取函数 - 尝试多个 API
+async function getCurrentIP() {
+  const apiPromises = IP_QUERY_APIS.map(url => 
+    httpGet(url).then(({ data }) => {
+      const json = safeJsonParse(data);
+      // 不同 API 返回格式不同
+      if (json) {
+        return json.ip || json.ip_addr || json.query;
+      }
+      return null;
+    }).catch(() => null)
+  );
+  
+  // 尝试所有 API，返回第一个成功的
+  for (let i = 0; i < apiPromises.length; i++) {
+    try {
+      const ip = await apiPromises[i];
+      if (ip && typeof ip === 'string' && ip.includes('.')) {
+        return ip;
+      }
+    } catch (_) {
+      continue;
+    }
+  }
+  
+  // 如果所有 API 都失败，尝试纯文本 API
+  try {
+    const { data } = await httpGet("https://api.ipify.org");
+    if (data && typeof data === 'string' && data.includes('.')) {
+      return data.trim();
+    }
+  } catch (_) {
+    // 继续尝试下一个
+  }
+  
+  try {
+    const { data } = await httpGet("http://ifconfig.me/ip");
+    if (data && typeof data === 'string' && data.includes('.')) {
+      return data.trim();
+    }
+  } catch (_) {
+    // 最后尝试
+  }
+  
+  return null;
+}
+
 // ========== 主逻辑 ==========
 (async () => {
-  let ip = null;
-  try {
-    const { data: ipv4Data } = await httpGet(IPV4_API);
-    const ipv4Json = safeJsonParse(ipv4Data);
-    ip = ipv4Json?.query || ipv4Json?.ip || String(ipv4Data || "").trim();
-  } catch (_) {}
+  let ip = await getCurrentIP();
 
   if (!ip) {
-    $done({ title: "IP 纯净度检测", content: "获取 IPv4 地址失败", icon: "exclamationmark.triangle.fill" });
+    $done({ 
+      title: "IP 纯净度检测", 
+      content: "❌ 获取 IPv4 地址失败\n\n可能原因：\n1. 网络连接问题\n2. 所有查询服务都不可用\n3. 当前节点可能无法访问外部网络",
+      icon: "network.slash" 
+    });
     return;
   }
 
@@ -252,7 +305,8 @@ async function fetchIpwhois(ip) {
   $done({
     title: "节点 IP 风险检测报告",
     content:
-`🌐 IP地址：${ip}
+`✅ IP地址获取成功
+🌐 IP地址：${ip}
 📡 ASN信息：${asnText}
 📍 地理位置：${flag} ${country} ${city}
 🏷️ ${hostingLine}
@@ -269,4 +323,4 @@ ${riskLines}${factorText}`,
     content: `请求失败：${String(e && e.message ? e.message : e)}`,
     icon: "network.slash",
   });
-}); 
+});
