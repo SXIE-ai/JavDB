@@ -7,18 +7,30 @@
             "type": "input",
             "title": "地区",
             "key": "location",
-            "placeholder": "如：江苏、北京、上海",
-            "default": "江苏"
+            "placeholder": "如: 湖南, 北京, 上海, 广东",
+            "default": "湖南"
         },
         {
             "type": "select",
             "title": "油号",
             "key": "type",
             "options": [
-                {"label": "92号汽油", "value": "92"},
-                {"label": "95号汽油", "value": "95"},
-                {"label": "98号汽油", "value": "98"},
-                {"label": "0号柴油", "value": "0"}
+                {
+                    "title": "92号汽油",
+                    "value": "92"
+                },
+                {
+                    "title": "95号汽油",
+                    "value": "95"
+                },
+                {
+                    "title": "98号汽油",
+                    "value": "98"
+                },
+                {
+                    "title": "0号柴油",
+                    "value": "0"
+                }
             ],
             "default": "92"
         },
