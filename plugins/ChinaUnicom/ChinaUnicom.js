@@ -3,6 +3,40 @@
 // 功能: 签到 + 抽奖 + 查询余量
 // 需要先抓包获取Cookie配置
 
+// 中国联通签到脚本 for Loon
+// 版本: 2.0.1
+
+// === 用户配置区（手动修改这里）===
+const USER_CONFIG = {
+  // 登录配置
+  loginUrl: "https://act.10010.com/SigninApp/login",
+  loginHeaders: {
+    "Cookie": "在这里填入你的Cookie",
+    "User-Agent": "ChinaUnicom/7.4.0",
+    "Content-Type": "application/x-www-form-urlencoded"
+  },
+  
+  // 签到配置
+  signUrl: "https://act.10010.com/SigninApp/signin/daySign",
+  signHeaders: {
+    "Cookie": "在这里填入你的Cookie",
+    "Referer": "https://act.10010.com/SigninApp/signin/index",
+    "User-Agent": "ChinaUnicom/7.4.0"
+  },
+  
+  // 抽奖配置
+  lotteryLoginUrl: "https://m.client.10010.com/dailylottery/static/doubleball/firstpage",
+  lotteryLoginHeaders: {
+    "Cookie": "在这里填入你的Cookie",
+    "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X)"
+  },
+  
+  // 功能开关
+  enableSign: true,
+  enableLottery: true,
+  enableNotification: true
+};
+// === 配置结束 ===
 const CONFIG = {
     name: '中国联通签到',
     version: '2.0.0',
