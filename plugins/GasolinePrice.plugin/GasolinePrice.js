@@ -1,8 +1,0 @@
-[Panel]
-gasoline-price = script-name=gasoline-price, title=今日油价, content=点击查询油价信息, icon=oilcan.fill, update-interval=0
-
-[Script]
-gasoline-price = type=generic, script-path=https://raw.githubusercontent.com/SXIE-ai/Loon/main/plugins/GasolinePrice.js, timeout=30
-
-# 可选：每日自动查询（上午9点）
-# cron "0 9 * * *" script-path=https://raw.githubusercontent.com/SXIE-ai/Loon/main/plugins/GasolinePrice.js, tag=今日油价提醒, img-url=oilcan.fill, enabled=true
