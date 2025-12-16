@@ -1,12 +1,13 @@
 // 汽油价格查询脚本 for Loon
-// 版本: 1.0.5
+// 版本: 1.0.6
 // 作者: SXIE-ai
-// 离线版本 - 使用本地油价数据
+// 离线版本 - 带通知功能
 
 const defaultConfig = {
     location: '湖南',
     type: '92',
-    isShowAll: true
+    isShowAll: true,
+    enableNotification: true  // 新增：是否启用通知
 };
 
 // 获取配置
@@ -17,7 +18,8 @@ function getConfig() {
             return {
                 location: params.get('location') || defaultConfig.location,
                 type: params.get('type') || defaultConfig.type,
-                isShowAll: params.get('isShowAll') === 'true' || defaultConfig.isShowAll
+                isShowAll: params.get('isShowAll') === 'true' || defaultConfig.isShowAll,
+                enableNotification: params.get('enableNotification') !== 'false'  // 默认true
             };
         } catch (e) {
             console.log('解析参数失败，使用默认配置');
@@ -36,11 +38,12 @@ function getConfig() {
     return defaultConfig;
 }
 
-// 2025年12月全国油价数据
+// 油价数据
 const oilPriceData = {
     'updateDate': '2025-12-16',
     'nextAdjustDate': '2025-12-30',
     'trend': '下调',
+    'change': -0.04,  // 平均下调幅度
     
     'provinces': {
         '湖南': {
@@ -84,6 +87,34 @@ const oilPriceData = {
             change92: -0.04, change95: -0.04, change98: -0.04, change0: -0.05,
             rank: 24,
             remark: '华东地区'
+        },
+        '四川': {
+            name: '四川省',
+            92: 6.95,  95: 7.44,  98: 8.44,  0: 6.70,
+            change92: -0.04, change95: -0.04, change98: -0.04, change0: -0.05,
+            rank: 22,
+            remark: '西南地区'
+        },
+        '湖北': {
+            name: '湖北省',
+            92: 6.85,  95: 7.33,  98: 8.33,  0: 6.60,
+            change92: -0.04, change95: -0.04, change98: -0.04, change0: -0.05,
+            rank: 18,
+            remark: '中部地区'
+        },
+        '山东': {
+            name: '山东省',
+            92: 6.83,  95: 7.32,  98: 8.32,  0: 6.58,
+            change92: -0.04, change95: -0.04, change98: -0.04, change0: -0.05,
+            rank: 17,
+            remark: '华东地区'
+        },
+        '河南': {
+            name: '河南省',
+            92: 6.82,  95: 7.30,  98: 8.30,  0: 6.57,
+            change92: -0.04, change95: -0.04, change98: -0.04, change0: -0.05,
+            rank: 16,
+            remark: '中部地区'
         }
     }
 };
@@ -96,12 +127,11 @@ function getProvinceData(provinceKey) {
             ...province,
             updateDate: oilPriceData.updateDate,
             nextAdjustDate: oilPriceData.nextAdjustDate,
-            trend: oilPriceData.trend
+            trend: oilPriceData.trend,
+            avgChange: oilPriceData.change
         };
     }
     
-    // 如果找不到省份，返回湖南数据
-    console.log(`未找到 ${provinceKey} 的油价数据，使用湖南数据`);
     const hunanData = oilPriceData.provinces['湖南'];
     return {
         ...hunanData,
@@ -109,8 +139,45 @@ function getProvinceData(provinceKey) {
         updateDate: oilPriceData.updateDate,
         nextAdjustDate: oilPriceData.nextAdjustDate,
         trend: oilPriceData.trend,
+        avgChange: oilPriceData.change,
         isDefault: true
     };
+}
+
+// 发送通知
+function sendNotification(provinceData, isShowAll, enableNotification) {
+    if (!enableNotification || typeof $notification === 'undefined') {
+        return;
+    }
+    
+    const { name, updateDate, trend, avgChange } = provinceData;
+    const shortName = name.replace('省', '').replace('市', '').replace('自治区', '').replace('（参考湖南）', '');
+    
+    // 生成通知标题
+    const title = `⛽ ${shortName}油价更新`;
+    
+    // 生成通知内容
+    let subtitle = '';
+    let body = '';
+    
+    if (isShowAll) {
+        subtitle = `92号: ¥${provinceData[92].toFixed(2)}  95号: ¥${provinceData[95].toFixed(2)}`;
+        body = `98号: ¥${provinceData[98].toFixed(2)}  0号柴油: ¥${provinceData[0].toFixed(2)}\n`;
+    } else {
+        subtitle = `最新油价信息`;
+        body = `${provinceData.name}今日油价已更新\n`;
+    }
+    
+    body += `📅 ${updateDate}  📈 本轮${trend}${avgChange ? ` ${avgChange.toFixed(2)}元` : ''}`;
+    
+    // 发送通知
+    console.log('发送通知:', title, subtitle, body);
+    $notification.post(title, subtitle, body);
+    
+    // 记录最后通知时间
+    const now = new Date();
+    const lastNotifyTime = now.toISOString();
+    $persistentStore.write(lastNotifyTime, 'last_gasoline_notify');
 }
 
 // 主函数
@@ -118,9 +185,9 @@ function main() {
     try {
         // 获取配置
         const config = getConfig();
-        const { location, type, isShowAll } = config;
+        const { location, type, isShowAll, enableNotification } = config;
         
-        console.log(`查询油价 - 地区: ${location}, 显示全部: ${isShowAll}`);
+        console.log(`查询油价 - 地区: ${location}, 显示全部: ${isShowAll}, 通知: ${enableNotification}`);
         
         // 获取省份数据
         const provinceData = getProvinceData(location);
@@ -155,27 +222,30 @@ function main() {
         content += `\n📈 趋势: 本轮${trend}`;
         content += `\n⏰ 下次调价: ${nextAdjustDate}`;
         
+        // 判断是否发送通知
+        const isCronTrigger = $environment && $environment['trigger'] === 'cron';
+        const isManualRefresh = $environment && $environment['trigger'] === 'manual';
+        
+        if (isCronTrigger || (enableNotification && isManualRefresh)) {
+            sendNotification(provinceData, isShowAll, enableNotification);
+        }
+        
         // 生成标题
         const shortName = name.replace('省', '').replace('市', '').replace('自治区', '').replace('（参考湖南）', '');
         const title = `今日油价 - ${shortName}`;
         
-        console.log(`标题: ${title}`);
-        console.log(`内容: \n${content}`);
-        
-        // 输出到面板 - Loon的正确格式
+        // 输出到面板
         const result = {
             title: title,
             content: content,
             icon: "fuelpump"
         };
         
-        console.log('准备调用 $done');
         $done(result);
         
     } catch (error) {
         console.error('油价查询错误:', error);
         
-        // 错误时显示默认数据
         const defaultData = oilPriceData.provinces['湖南'];
         const fallbackContent = 
             `92号汽油: ¥${defaultData[92].toFixed(2)} ↓-0.04\n` +
@@ -189,13 +259,16 @@ function main() {
             `📈 趋势: ${oilPriceData.trend}\n` +
             `⏰ 下次调价: ${oilPriceData.nextAdjustDate}`;
         
-        const fallbackResult = {
+        // 错误时也发送通知
+        if (typeof $notification !== 'undefined') {
+            $notification.post('油价查询失败', '请检查网络或配置', '使用本地数据继续服务');
+        }
+        
+        $done({
             title: '今日油价 - 湖南',
             content: fallbackContent,
             icon: "fuelpump"
-        };
-        
-        $done(fallbackResult);
+        });
     }
 }
 
@@ -206,7 +279,7 @@ try {
     console.error('脚本执行错误:', e);
     $done({
         title: '油价查询',
-        content: '脚本执行出错，请检查配置\n\n错误信息：' + e.message,
+        content: '脚本执行出错\n\n错误信息：' + e.message,
         icon: "exclamationmark.triangle"
     });
 }
