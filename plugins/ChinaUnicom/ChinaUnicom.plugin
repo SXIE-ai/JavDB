@@ -14,10 +14,10 @@ china-unicom = script-name=china-unicom, title=联通签到, content=点击手�
 
 [Script]
 # 通用脚本（带参数）
-china-unicom = type=generic, script-path=https://raw.githubusercontent.com/SXIE-ai/Loon/main/plugins/ChinaUnicom.plugin/ChinaUnicom.js, timeout=30, argument=enableSign=true&enableLottery=true&enableNotification=true
+china-unicom = type=generic, script-path=https://raw.githubusercontent.com/SXIE-ai/Loon/refs/heads/main/plugins/ChinaUnicom/ChinaUnicom.js, timeout=30, argument=enableSign=true&enableLottery=true&enableNotification=true
 
 # 定时任务脚本
-china-unicom-cron = type=cron, cronexp=0 9 * * *, script-path=https://raw.githubusercontent.com/SXIE-ai/Loon/main/plugins/ChinaUnicom.plugin/ChinaUnicom.js, timeout=30, argument=enableSign=true&enableLottery=true&enableNotification=true
+china-unicom-cron = type=cron, cronexp=0 9 * * *, script-path=https://raw.githubusercontent.com/SXIE-ai/Loon/refs/heads/main/plugins/ChinaUnicom/ChinaUnicom.js, timeout=30, argument=enableSign=true&enableLottery=true&enableNotification=true
 
 # 配置面板
 [MITM]
