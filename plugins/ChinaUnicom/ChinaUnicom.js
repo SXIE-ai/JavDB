@@ -3,7 +3,12 @@
 // 功能: 签到 + 抽奖 + 查询余量
 // 需要先抓包获取Cookie配置
 
-// === 用户配置区（手动修改这里）===
+const CONFIG = {
+    name: '中国联通签到',
+    version: '2.0.0',
+    author: 'SXIE-ai',
+
+  // === 用户配置区（手动修改这里）===
 const USER_CONFIG = {
   // 登录配置
   loginUrl: "https://act.10010.com/SigninApp/login",
@@ -34,11 +39,6 @@ const USER_CONFIG = {
   enableNotification: true
 };
 // === 配置结束 ===
-const CONFIG = {
-    name: '中国联通签到',
-    version: '2.0.0',
-    author: 'SXIE-ai',
-    
     // 默认配置
     defaults: {
         enableSign: true,
