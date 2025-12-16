@@ -13,7 +13,7 @@ const USER_CONFIG = {
   // 登录配置
   loginUrl: "https://act.10010.com/SigninApp/login",
   loginHeaders: {
-    "Cookie": "在这里填入你的Cookie",
+    "Cookie": "ecs_token=eyJkYXRhIjoiYzhkYjRiOGNjYWJlNDYyYjg2MjkxYWJkZmZjZjFiZTQ0N2EwYmYzODc3YWUzYzJjYmU5ZjUyOWFhMmQxNjY2NDQzYTg1MmY5N2NmZDUyODQwOGVkYmJlYWQ1MjQ4YTEyYmRlMTlkMWI4Y2UyNGQzNmY5OGY0YTkzNDFlYWY1MDZiNGM2NzU3ZDRjOWE2Mzk1YjdmOWJjNmI3YWJkZDBkMjE4MmViZTg5NGZmODQ0NmQ4M2RmMWJjNjliZWZlNDk4YzcyNjFkZjE4OWZlMTNmMzliNDBjMGY4NDRlMmRiMGY4MDU1M2U4ZTViYTI2OTVjYTc3ZmU0MjY2OGE3MWU0NDUyYThlZWE0N2ZhMjVlZjU0ZDZjM2Y2YjczNjE2M2ZiMTE4MDI3MDFlNTkzZTRjZWJlNGE1MjJmYTA0NmMxNWM3MTkzYTRkN2E3YmY3MjJkOTE5NmEyMWQ3OTdlOWI5Zjc5NDY1MjMzNGM2NzgzNmQyOThkM2EwZjAxOTFiMzNkMzBkYzk1MjA0ZjY0N2EzNjQ3YjAxNzc2ODMzZjk3YTExMGEyMDE0ZmY4YTdhMjliZmNhYTEwMWJhMjFjYWM4NyIsInZlcnNpb24iOiIwMCJ9;t3_token=079161d6ccdbf793da6d26d4e62bff38;PvSessionId=20251216235313367BA4A3-D15D-4449-B7F8-DB209A9997E5;devicedId=367BA4A3-D15D-4449-B7F8-DB209A9997E5;cw_mutual=7064d003eb3c8934e769e430ecf3d64aa2eab2e201564032ff2e99be6d9dc5915cea2e60447b0cd01a4be5936f36624092f2ee1860f197effea41662eada20a5;login_type=06;c_mobile=18556734898;c_id=c8d5b5eb5a56fccebc49892cf6bf899d9ed00ff3314cacf1665d609fb0b8b36d;u_areaCode=;c_version=iphone_c@12.0801;channel=GGPD;wo_family=0;u_account=18556734898;city=034|450|90063345|-99;invalid_at=c22860e5e664936b33c57cc4ee0ec62a17a24e65040286d1a63989e9c9f1c1a4;ecs_acc=RDwx9SCYg/abxn1GmlfW6Xmr/Z5rrFY/bqzym1KTt3beNhfEHHZfORhwwYDSTYVa9K3WScJnglUAXR1tyvvjLALIvU1C29e9VUyt+n5CgVt4GJpmDmkOHzalVQ0RS/fb5jeLMJMw6ARSOQzgOgsHG8tBtvFZygwBLASZvxdioe8=;random_login=0;enc_acc=RDwx9SCYg/abxn1GmlfW6Xmr/Z5rrFY/bqzym1KTt3beNhfEHHZfORhwwYDSTYVa9K3WScJnglUAXR1tyvvjLALIvU1C29e9VUyt+n5CgVt4GJpmDmkOHzalVQ0RS/fb5jeLMJMw6ARSOQzgOgsHG8tBtvFZygwBLASZvxdioe8=;third_token=eyJkYXRhIjoiMzVmMTllNmYxMDJkZWM5OTcxM2JiZDJmMTYxOTIzZWNjZTFlMTg4NzA0ODE5ODU4MjE3YzdhZjM2OTZiOGNlM2U4NTYxYTE4YWJiYjJkODJlYWYzZWNiOTQxYzM2ZDVlNGM3MDU2YTFhZDlhMTgwNGZlYTU0NGI5MTdmNDBlZGY4YTgwMTI1NmNlZTk5MTU0OGY3NjZkNzlhNzJkMDMwOCIsInZlcnNpb24iOiIwMCJ9;",
     "User-Agent": "ChinaUnicom/7.4.0",
     "Content-Type": "application/x-www-form-urlencoded"
   },
@@ -21,16 +21,9 @@ const USER_CONFIG = {
   // 签到配置
   signUrl: "https://act.10010.com/SigninApp/signin/daySign",
   signHeaders: {
-    "Cookie": "在这里填入你的Cookie",
+    "Cookie": "ecs_token=eyJkYXRhIjoiYzhkYjRiOGNjYWJlNDYyYjg2MjkxYWJkZmZjZjFiZTQ0N2EwYmYzODc3YWUzYzJjYmU5ZjUyOWFhMmQxNjY2NDQzYTg1MmY5N2NmZDUyODQwOGVkYmJlYWQ1MjQ4YTEyNGIwNDRmNTdhZTBkMjUzYmY0ZmE2MmUxYzNiZjk5NDZhYWY5NDRiNDZkMDMxOWNjY2RkYzNhM2EyNzVmYzliMzc5ZGVmZmM0M2M3Njc0YTE5OGVjMGRlNDU2ODEyYjA4YWU3ZmQ0OTM0NjM0OTdiNWZlOGE5OTUzOTAyZTg3YWE3YThiMWEyMTUyYjFiYWU4YTFkODZhNzI1Yzg5ZWRjMDUwODI4MDZiMGM2NGM2MmY5NjFiMTJkNjUzMzgyN2M5MDQ3MDdmMWEyMjQyZDFlMmYwMjgzZDVhOGEzZDIzYWQyNzY4M2Q0NTdkZmFjZGUxNDBhZTUxYTcyOTRjMWFkMWYxNzYxMmY2ZGMyMTVjZTUzYjhmOWRkYjQ5NzBkNzI3OWRhOWY1ZGRiODVmZDliNGRhMjI1MzZkNTFlZDc2MmVmMzAzYmM4YWEwMWRhMThkOTYwM2M0YmVhMTAzNTlhMiIsInZlcnNpb24iOiIwMCJ9",
     "Referer": "https://act.10010.com/SigninApp/signin/index",
     "User-Agent": "ChinaUnicom/7.4.0"
-  },
-  
-  // 抽奖配置
-  lotteryLoginUrl: "https://m.client.10010.com/dailylottery/static/doubleball/firstpage",
-  lotteryLoginHeaders: {
-    "Cookie": "在这里填入你的Cookie",
-    "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X)"
   },
   
   // 功能开关
