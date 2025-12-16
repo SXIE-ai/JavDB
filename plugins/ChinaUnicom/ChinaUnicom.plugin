@@ -13,7 +13,7 @@
 china-unicom = script-name=china-unicom, title=联通签到, content=点击手动执行, update-interval=86400
 
 [Script]
-china-unicom = type=generic, script-path=https://raw.githubusercontent.com/SXIE-ai/Loon/main/plugins/ChinaUnicom.plugin/ChinaUnicom.js, timeout=30, argument=enableSign=true&enableLottery=true&enableNotification=true
+china-unicom = type=generic, script-path=https://raw.githubusercontent.com/SXIE-ai/Loon/refs/heads/main/plugins/ChinaUnicom/ChinaUnicom.js, timeout=30, argument=enableSign=true&enableLottery=true&enableNotification=true
 
 # 每日上午9点自动执行
-cron "0 9 * * *" script-path=https://raw.githubusercontent.com/SXIE-ai/Loon/main/plugins/ChinaUnicom.plugin/ChinaUnicom.js, tag=联通每日签到, argument=enableSign=true&enableLottery=true&enableNotification=true
+cron "0 9 * * *" script-path=https://raw.githubusercontent.com/SXIE-ai/Loon/refs/heads/main/plugins/ChinaUnicom/ChinaUnicom.js, tag=联通每日签到, argument=enableSign=true&enableLottery=true&enableNotification=true
