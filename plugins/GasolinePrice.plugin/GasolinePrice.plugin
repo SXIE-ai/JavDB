@@ -1,8 +1,22 @@
+#!name=汽油价格查询
+#!desc=查询国内各省市今日油价信息\n支持查询92号、95号、98号汽油和0号柴油价格\n数据来源：国内油价实时更新
+#!author=SXIE-ai
+#!homepage=https://github.com/SXIE-ai/Loon
+#!icon=https://raw.githubusercontent.com/SXIE-ai/Loon/main/plugins/GasolinePrice.plugin/icon.png
+#!openUrl=https://github.com/SXIE-ai/Loon/tree/main/plugins/GasolinePrice.plugin
+#!tag=工具,生活
+#!system=iOS, iPadOS, macOS
+#!system_version=15
+#!loon_version=3.2.1
+#!date=2024-12-16 18:00:00
+#!version=v1.0.0
+#!category=工具
+
 [Panel]
-gasoline-price = script-name=gasoline-price, title=今日油价, content=点击查询油价信息, icon=oilcan.fill, update-interval=0
+gasoline-price = script-name=gasoline-price, title=今日油价, content=点击刷新..., style=info, update-interval=86400
 
 [Script]
-gasoline-price = type=generic, script-path=https://raw.githubusercontent.com/SXIE-ai/Loon/refs/heads/main/plugins/GasolinePrice.plugin/GasolinePrice.js, timeout=30
+gasoline-price = type=generic, script-path=https://raw.githubusercontent.com/SXIE-ai/Loon/main/plugins/GasolinePrice.plugin/GasolinePrice.js, timeout=10
 
-# 可选：每日自动查询（上午9点）
-cron "0 9 * * *" script-path=https://raw.githubusercontent.com/SXIE-ai/Loon/refs/heads/main/plugins/GasolinePrice.plugin/GasolinePrice.js, tag=今日油价提醒, img-url=oilcan.fill, enabled=true
+# 每日上午9点自动更新油价
+cron "0 9 * * *" script-path=https://raw.githubusercontent.com/SXIE-ai/Loon/main/plugins/GasolinePrice.plugin/GasolinePrice.js, tag=油价每日更新
