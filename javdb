@@ -5,3 +5,7 @@ DOMAIN-SUFFIX, app.javdb564.com
 DOMAIN-SUFFIX, jav.app
 DOMAIN-SUFFIX, jdbstatic.com
 DOMAIN-SUFFIX, api.btyjscl.com
+DOMAIN-SUFFIX, jdbimgs.com
+DOMAIN-SUFFIX, jdbstatic.com
+
+regexp:javdb\d+\.com$
