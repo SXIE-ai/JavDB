@@ -1,10 +1,14 @@
-[Plugin]
-# AppRaven Premium 解锁
-# 解锁高级功能：Premium、InAppPurchases、Ownership、Arcade、Preorder
-# 作者：SXIE-ai
-# 更新时间：2024
-# 版本：1.0.0
-# GitHub: https://github.com/SXIE-ai/Loon/tree/main/plugins/AppRaven
+#!name=AppRaven
+#!desc=AppRaven Premium 解锁
+#!author=SXIE-ai
+#!homepage=https://github.com/SXIE-ai/Loon/tree/main
+#!icon=https://raw.githubusercontent.com/SXIE-ai/Loon/refs/heads/main/plugins/AppRaven/IMG_3600.png
+#!tag=AppRaven Premium 解锁
+#!system=iOS,
+#!system_version=15
+#!loon_version=3.2.1(372)
+#!date=2025-12-31
+
 
 [Script]
 # 主脚本 - 使用远程脚本文件
