@@ -1,6 +1,5 @@
-#!name=简单测试
-#!desc=测试Panel功能
-#!author=Test
+#!name=Test Panel
+#!desc=Panel Test
 
 [Panel]
-test_switch = switch=true, title=测试开关, default=true
+my_setting = switch=true, title=My Setting, default=true
