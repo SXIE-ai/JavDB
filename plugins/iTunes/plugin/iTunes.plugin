@@ -1,20 +1,9 @@
-#!name=iTunes 解锁
-#!desc=解锁 iTunes 购买功能
-#!author=SXIE-ai
-#!homepage=https://github.com/SXIE-ai/Loon
-#!icon=https://raw.githubusercontent.com/SXIE-ai/Loon/refs/heads/main/plugins/iTunes/IMG_3602.png
-#!tag=iTunes
-#!loon_version=3.2.1(372)
+#!name=测试插件
+#!desc=测试设置面板
+#!author=Test
 
 [Panel]
-选择脚本 = select=脚本1|脚本2|脚本3, title=选择版本, default=脚本1
+测试开关 = switch=true, title=测试开关, default=true
 
 [Script]
-脚本1 = type=http-response,pattern=^https?:\/\/buy\.itunes\.apple\.com\/,requires-body=true,script-path=https://raw.githubusercontent.com/SXIE-ai/Loon/main/plugins/iTunes/iTunes1.js,timeout=10,enable=persistent://iTunes.plugin#选择脚本==脚本1
-
-脚本2 = type=http-response,pattern=^https?:\/\/buy\.itunes\.apple\.com\/,requires-body=true,script-path=https://raw.githubusercontent.com/SXIE-ai/Loon/main/plugins/iTunes/iTunes2.js,timeout=10,enable=persistent://iTunes.plugin#选择脚本==脚本2
-
-脚本3 = type=http-response,pattern=^https?:\/\/buy\.itunes\.apple\.com\/,requires-body=true,script-path=https://raw.githubusercontent.com/SXIE-ai/Loon/main/plugins/iTunes/iTunes3.js,timeout=10,enable=persistent://iTunes.plugin#选择脚本==脚本3
-
-[Mitm]
-hostname = buy.itunes.apple.com
+test_script = type=http-request,pattern=example.com,script=console.log("test"),enable=persistent://Test.plugin#测试开关==true
