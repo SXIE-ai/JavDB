@@ -1,7 +1,7 @@
 #!name=iTunes 解锁合集
 #!desc=iTunes 系列解锁脚本
 #!author=SXIE-ai
-#!icon=sf.music.note
+#!icon=https://raw.githubusercontent.com/SXIE-ai/Loon/refs/heads/main/plugins/iTunes/IMG_3602.png
 
 # 先检查 Loon 版本
 [Panel]
