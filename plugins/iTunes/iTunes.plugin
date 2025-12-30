@@ -1,8 +1,6 @@
-#!name=修复测试
-#!desc=测试正确语法
+#!name=简单测试
+#!desc=只测试Panel
 
 [Panel]
-测试选择 = select=A|B|C, title=测试, default=A
-
-[Script]
-测试脚本 = type=http-request,pattern=example.com,script=console.log("test"),enable=persistent://test-fixed.plugin#测试选择==A
+测试开关 = switch=true, title=测试开关, default=true
+测试选择 = select=选项1|选项2|选项3, title=测试选择, default=选项1
