@@ -1,30 +1,20 @@
-#!name=iTunes 解锁合集
-#!desc=iTunes 系列解锁脚本\n三个版本选其一使用
+#!name=iTunes 解锁
+#!desc=解锁 iTunes 购买功能
 #!author=SXIE-ai
-#!homepage=https://github.com/SXIE-ai/Loon/tree/main/plugins/iTunes
+#!homepage=https://github.com/SXIE-ai/Loon
 #!icon=https://raw.githubusercontent.com/SXIE-ai/Loon/refs/heads/main/plugins/iTunes/IMG_3602.png
-#!tag=iTunes,解锁
-#!system=iOS,iPadOS
-#!system_version=15
+#!tag=iTunes
 #!loon_version=3.2.1(372)
-#!date=2025-12-31
 
-# ==================== 设置面板 ====================
 [Panel]
-setting_info = title=iTunes解锁设置, style=info, content=请选择一个脚本版本使用
+选择脚本 = select=脚本1|脚本2|脚本3, title=选择版本, default=脚本1
 
-script_choice = select=chxm1023|ddgksf2013|Guding88, title=选择脚本, desc=三个版本选其一, default=chxm1023
-
-plugin_enable = switch=true, title=启用插件, default=true
-
-# ==================== 脚本配置 ====================
 [Script]
-iTunes-chxm1023 = type=http-response,pattern=^https?:\/\/buy\.itunes\.apple\.com\/,requires-body=true,script-path=https://raw.githubusercontent.com/SXIE-ai/Loon/main/plugins/iTunes/iTunes1.js,timeout=10,enable=persistent://iTunes.plugin#plugin_enable==true&script_choice==chxm1023
+脚本1 = type=http-response,pattern=^https?:\/\/buy\.itunes\.apple\.com\/,requires-body=true,script-path=https://raw.githubusercontent.com/SXIE-ai/Loon/main/plugins/iTunes/iTunes1.js,timeout=10,enable=persistent://iTunes.plugin#选择脚本==脚本1
 
-iTunes-ddgksf2013 = type=http-response,pattern=^https?:\/\/buy\.itunes\.apple\.com\/,requires-body=true,script-path=https://raw.githubusercontent.com/SXIE-ai/Loon/main/plugins/iTunes/iTunes2.js,timeout=10,enable=persistent://iTunes.plugin#plugin_enable==true&script_choice==ddgksf2013
+脚本2 = type=http-response,pattern=^https?:\/\/buy\.itunes\.apple\.com\/,requires-body=true,script-path=https://raw.githubusercontent.com/SXIE-ai/Loon/main/plugins/iTunes/iTunes2.js,timeout=10,enable=persistent://iTunes.plugin#选择脚本==脚本2
 
-iTunes-Guding88 = type=http-response,pattern=^https?:\/\/buy\.itunes\.apple\.com\/,requires-body=true,script-path=https://raw.githubusercontent.com/SXIE-ai/Loon/main/plugins/iTunes/iTunes3.js,timeout=10,enable=persistent://iTunes.plugin#plugin_enable==true&script_choice==Guding88
+脚本3 = type=http-response,pattern=^https?:\/\/buy\.itunes\.apple\.com\/,requires-body=true,script-path=https://raw.githubusercontent.com/SXIE-ai/Loon/main/plugins/iTunes/iTunes3.js,timeout=10,enable=persistent://iTunes.plugin#选择脚本==脚本3
 
-# ==================== MITM配置 ====================
 [Mitm]
 hostname = buy.itunes.apple.com
