@@ -7,6 +7,12 @@
 #!loon_version=3.2.0
 #!date=2024-12-20 12:00:00
 
+[Rule]
+# QQ音乐开屏
+DOMAIN,music.y.qq.com,REJECT
+# 建设银行绕过vpn
+DOMAIN,yunbusiness.ccb.com,REJECT
+
 [Rewrite]
 # 腾讯系广告
 ^https?:\/\/btrace\.qq\.com reject-200
