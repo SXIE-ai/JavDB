@@ -39,8 +39,12 @@
 ^https?:\/\/hdgateway\.zto\.com\/getAdInfo reject-dict
 ^https?:\/\/hdgateway\.zto\.com\/listJumperShow reject-dict
 
-# 其他广告
-^https?:\/\/xhlld.*\.shop\/view\/(adList|getVideoInfoAdList) url reject
+[Rule]
+# QQ音乐开屏
+DOMAIN,music.y.qq.com,REJECT
+# 建设银行
+DOMAIN,yunbusiness.ccb.com,REJECT
+
 
 [MitM]
 hostname = 
