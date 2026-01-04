@@ -13,7 +13,8 @@ DOMAIN,music.y.qq.com,REJECT
 DOMAIN,yunbusiness.ccb.com,REJECT
 # 动卡空间直连
 DOMAIN,creditcard.ecitic.com,DIRECT
-DOMAIN,citicbank.com,DIRECT
+DOMAIN,citictbank.com,DIRECT
+DOMAIN-SUFFIX,ecitic.com,DIRECT
 # 盯盯拍开屏
 DOMAIN,appgw.ddpai.com,DIRECT
 DOMAIN,img3.ddpai.com,DIRECT
