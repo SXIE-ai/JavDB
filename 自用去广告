@@ -40,6 +40,8 @@
 ^https?:\/\/hdgateway\.zto\.com\/listJumperShow reject-dict
 
 [Rule]
+# 基础规则依赖
+DOMAIN-SUFFIX,qq.com,DIRECT
 # QQ音乐开屏
 DOMAIN,music.y.qq.com,REJECT
 # 建设银行
