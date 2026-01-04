@@ -15,7 +15,5 @@ DOMAIN,yunbusiness.ccb.com,REJECT
 DOMAIN,creditcard.ecitic.com,DIRECT
 DOMAIN,citicbank.com,DIRECT
 # 盯盯拍 只直连主要业务域名，其他走代理
-# DOMAIN,app.ddpai.com,DIRECT
-# DOMAIN,appgw.ddpai.com,DIRECT
-# DOMAIN,img3.ddpai.com,DIRECT
+
 DOMAIN-SUFFIX,ddpai.com,DIRECT
