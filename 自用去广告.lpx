@@ -23,7 +23,8 @@ URL-REGEX,^https?://y\.qq\.com/jzt/.*,REJECT
 URL-REGEX,^https?://y\.qq\.com/v3/static/.*,REJECT
 # QQ音乐JSON配置
 URL-REGEX,^https?://y\.qq\.com/.*\.json\?.*,REJECT
-
+QQ音乐个性化配置
+URL-REGEX,^https?://music-file6\.y\.qq\.com/linglong/pp/.*,REJECT
 
 # 建设银行绕过vpn
 DOMAIN,yunbusiness.ccb.com,REJECT
