@@ -27,6 +27,8 @@ URL-REGEX,^https?://y\.qq\.com/.*\.json\?.*,REJECT
 DOMAIN,analytics.95516.com,REJECT
 # 银联废弃的设备接口
 DOMAIN,device.cup.com.cn,REJECT
+# 银联反欺诈风控数据上报
+DOMAIN,antifraud.cup.com.cn,REJECT
 
 # 建设银行绕过vpn
 DOMAIN,yunbusiness.ccb.com,REJECT
