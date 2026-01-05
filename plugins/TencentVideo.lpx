@@ -1,5 +1,5 @@
 #!name=腾讯视频
-#!desc=不负好时光 [不负好广告]
+#!desc=不负好时光 [不负好广告]SXIE-ai 整理跟 QQ音乐重复的规则
 #!author=RuCu6[https://github.com/RuCu6]
 #!icon=https://raw.githubusercontent.com/sooyaaabo/IconLibrary/main/App/TencentVideo.png
 #!openUrl=https://apps.apple.com/app/id458318329
@@ -7,7 +7,9 @@
 #!date=2025-12-29 16:30
 
 [Rule]
+# 基于条件的丢弃请求规则（针对特定用户代理）
 AND,((IP-CIDR,0.0.0.0/0,no-resolve),(USER-AGENT,"live4iphoneRel*")),REJECT-DROP
+# 广告域名
 DOMAIN,adsmind.gdtimg.com,REJECT
 DOMAIN,info4.video.qq.com,REJECT
 DOMAIN,info6.video.qq.com,REJECT
@@ -18,12 +20,28 @@ DOMAIN,tpns.qq.com,REJECT
 DOMAIN,vv6.video.qq.com,REJECT
 DOMAIN-SUFFIX,gdt.qq.com,REJECT
 DOMAIN-SUFFIX,l.qq.com,REJECT
+DOMAIN-SUFFIX,gdtimg.com,REJECT
+DOMAIN-SUFFIX,video.mpush.qq.com,REJECT
+DOMAIN-SUFFIX,api.poll.video.qq.com,REJECT
+DOMAIN-SUFFIX,tpns.tencent.com,REJECT
+DOMAIN-SUFFIX,omgmta.qq.com,REJECT
+DOMAIN-SUFFIX,omgmta1.qq.com,REJECT
+# 广告追踪关键字
 DOMAIN-KEYWORD,trace.qq.com,REJECT
 DOMAIN-KEYWORD,trace.video.qq.com,REJECT
+DOMAIN-KEYWORD,track.qq.com,REJECT
+DOMAIN-KEYWORD,pgdt.gtimg.c,REJECT
+DOMAIN-KEYWORD,1258344696.file.myqcloud.com,REJECT
+# IP 地址拒绝
 IP-CIDR,47.110.187.87/32,REJECT,no-resolve
+IP-CIDR,183.201.213.194/32,REJECT,no-resolve
+IP-CIDR,120.222.144.64/32,REJECT,no-resolve
+IP-CIDR,111.6.166.107/32,REJECT,no-resolve
+# URL 匹配规则
 URL-REGEX,"^http:\/\/[\d\.:]*\/?(defaultts\.tc|vmind\.qqvideo\.tc|finderpdd\.video)\.qq\.com\/\w+",REJECT
 URL-REGEX,"^http:\/\/apd-vlive\.apdcdn\.tc\.qq\.com\/vmind\.qqvideo\.tc\.qq\.com\/\w+",REJECT
 URL-REGEX,"^http:\/\/apd-\w+\.v\.smtcdns\.com\/(defaultts|omts|vmind\.qqvideo)\.tc\.qq\.com\/\w+",REJECT
+# 其他域名
 DOMAIN,ugchsy.gtimg.com,REJECT
 DOMAIN,rmonitor.qq.com,REJECT
 DOMAIN,activity.video.qq.com,REJECT
@@ -31,23 +49,8 @@ DOMAIN,iacc.qq.com,REJECT
 DOMAIN,tux.qq.com,REJECT
 DOMAIN,aegis.qq.com,REJECT
 DOMAIN,rdelivery.qq.com,REJECT
+# 静态资源
 DOMAIN-SUFFIX,static-res.qq.com,REJECT
-DOMAIN-SUFFIX,gdtimg.com,REJECT
-DOMAIN-SUFFIX,l.qq.com,REJECT
-DOMAIN-SUFFIX,gdt.qq.com,REJECT
-DOMAIN-SUFFIX,video.mpush.qq.com,REJECT
-DOMAIN-SUFFIX,api.poll.video.qq.com,REJECT
-DOMAIN-SUFFIX,tpns.tencent.com,REJECT
-DOMAIN-SUFFIX,omgmta.qq.com,REJECT
-DOMAIN-SUFFIX,omgmta1.qq.com,REJECT
-DOMAIN-KEYWORD,track.qq.com,REJECT
-DOMAIN-KEYWORD,trace.qq.com,REJECT
-DOMAIN-KEYWORD,pgdt.gtimg.c,REJECT
-DOMAIN-KEYWORD,trace.video.qq.com,REJECT
-DOMAIN-KEYWORD,1258344696.file.myqcloud.com,REJECT
-IP-CIDR,183.201.213.194/32,REJECT,no-resolve
-IP-CIDR,120.222.144.64/32,REJECT,no-resolve
-IP-CIDR,111.6.166.107/32,REJECT,no-resolve
 
 [Body Rewrite]
 http-request ^https?:\/\/vv\.video\.qq\.com\/getvinfo &sppreviewtype=\d(.*)&spsrt=\d &sppreviewtype=0$1&spsrt=0
