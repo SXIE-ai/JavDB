@@ -1,10 +1,10 @@
 #!name=腾讯视频
-#!desc=不负好时光 [不负好广告]SXIE-ai 整理跟 QQ音乐重复的规则
+#!desc=不负好时光 [不负好广告]
 #!author=RuCu6[https://github.com/RuCu6]
 #!icon=https://raw.githubusercontent.com/sooyaaabo/IconLibrary/main/App/TencentVideo.png
 #!openUrl=https://apps.apple.com/app/id458318329
 #!homepage=https://github.com/sooyaaabo/Egern
-#!date=2025-12-29 16:30
+#!date=2025-12-29 16:30去重跟自用QQ音乐的规则
 
 [Rule]
 # 基于条件的丢弃请求规则（针对特定用户代理）
