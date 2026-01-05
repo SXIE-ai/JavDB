@@ -1,9 +1,20 @@
-# 盯盯拍直连
+# 盯盯拍包名（精确匹配）
+PROCESS-NAME,com.ddpai.ddp,DIRECT
+
+# 盯盯拍所有相关域名
+DOMAIN,ddpai.com,DIRECT
 DOMAIN-SUFFIX,ddpai.com,DIRECT
 DOMAIN-SUFFIX,ddpai.cn,DIRECT
-PROCESS-NAME,com.ddpai.*,DIRECT
+DOMAIN-KEYWORD,ddpai,DIRECT
+USER-AGENT,DDPai*,DIRECT
 
-# 本地网络
-IP-CIDR,192.168.0.0/16,DIRECT
-IP-CIDR,10.0.0.0/8,DIRECT
+# 本地网络（必须）
+IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
+IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
+IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
 DOMAIN-SUFFIX,local,DIRECT
+DOMAIN-KEYWORD,local,DIRECT
+
+# 盯盯拍可能用的CDN
+DOMAIN-SUFFIX,qiniucdn.com,DIRECT
+DOMAIN-SUFFIX,upaiyun.com,DIRECT
