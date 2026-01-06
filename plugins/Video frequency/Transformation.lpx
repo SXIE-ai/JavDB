@@ -1,0 +1,13 @@
+#!name=腾讯视频
+#!desc=去除开屏，我的页面，暂停时的广告
+#!author=RuCu6[https://github.com/RuCu6]
+#!icon=https://raw.githubusercontent.com/sooyaaabo/IconLibrary/main/App/TencentVideo.png
+#!homepage=https://github.com/SXIE-ai/loon
+#!date=2025-12-29 16:30
+
+
+[Rewrite]
+^https:\/\/h5v2\.cibnabg\.com\/api\/advertise\/list - reject
+
+[MITM]
+hostname = h5v2.cibnabg.com
