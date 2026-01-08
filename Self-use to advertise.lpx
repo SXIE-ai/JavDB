@@ -32,8 +32,8 @@ DOMAIN,adcdn6.tencentmusic.com,REJECT
 DOMAIN,adexpo.tencentmusic.com,REJECT
 DOMAIN,adclick.tencentmusic.com,REJECT
 # TME 广告（避免功能异常）
-DOMAIN,tmead.y.qq.com,NO-DROP
-DOMAIN,tmeadbak.y.qq.com,NO-DROP
+DOMAIN,tmead.y.qq.com,REJECT
+DOMAIN,tmeadbak.y.qq.com,REJECT
 DOMAIN,tmeadcomm.y.qq.com,REJECT
 # 广告 / 追踪 SDK
 DOMAIN,sdk.e.qq.com,REJECT
