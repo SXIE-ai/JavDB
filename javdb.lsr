@@ -1,0 +1,39 @@
+# ===============================
+# JavDB Full Rule Set (Loon)
+# Author: you
+# Policy Suggestion: 日本时延优选
+# ===============================
+
+# --- 主站 / 镜像 ---
+DOMAIN-SUFFIX,javdb.com
+DOMAIN-SUFFIX,javdb.app
+DOMAIN-SUFFIX,javdb.org
+DOMAIN-SUFFIX,jav.app
+
+# --- 数字镜像（如 javdb564.com）---
+DOMAIN-REGEX,javdb\d+\.com$
+
+# --- API / 防护 ---
+DOMAIN-SUFFIX,api.btyjscl.com
+
+# --- 图片 / 静态资源 ---
+DOMAIN-SUFFIX,javdbimg.com
+DOMAIN-SUFFIX,javdbimgs.com
+DOMAIN-SUFFIX,jdbimgs.com
+DOMAIN-SUFFIX,jdbstatic.com
+DOMAIN-SUFFIX,static.javdb.com
+
+# --- 预览 / 外链资源站 ---
+DOMAIN-SUFFIX,mm-cg.com
+DOMAIN-SUFFIX,avgle.com
+DOMAIN-SUFFIX,jable.tv
+DOMAIN-SUFFIX,jav.guru
+DOMAIN-SUFFIX,missav.com
+DOMAIN-SUFFIX,thisav.com
+
+# --- 常见跳转 / 短链 ---
+DOMAIN-SUFFIX,bit.ly
+DOMAIN-SUFFIX,t.co
+
+# --- CDN（极少数资源命中）---
+DOMAIN-SUFFIX,cloudflare.com
