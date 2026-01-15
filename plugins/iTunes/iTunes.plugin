@@ -22,19 +22,19 @@ itunes_author=select, chxm1023, ddgksf2013, Guding88, tag=脚本作者, desc=选
 iTunes_chxm1023 = type=http-response, \
 pattern=^https?:\/\/buy\.itunes\.apple\.com\/verifyReceipt$, \
 script-path=https://raw.githubusercontent.com/chxm1023/Rewrite/main/iTunes.js, \
-requires-body=true, timeout=30
+requires-body=true, timeout=30,tag=chxm1023
 
 # ddgksf2013
 iTunes_ddgksf2013 = type=http-response, \
 pattern=^https?:\/\/buy\.itunes\.apple\.com\/verifyReceipt$, \
 script-path=https://raw.githubusercontent.com/SXIE-ai/Loon/refs/heads/main/plugins/iTunes/iTunes2.js, \
-requires-body=true, timeout=30
+requires-body=true, timeout=30,tag=ddgksf2013
 
 # Guding88
 iTunes_Guding88 = type=http-response, \
 pattern=^https?:\/\/buy\.itunes\.apple\.com\/verifyReceipt$, \
 script-path=https://raw.githubusercontent.com/Guding88/Script/main/APPheji_iTunes.js, \
-requires-body=true, timeout=30
+requires-body=true, timeout=30,tag=Guding88
 
 ########################
 # MITM
