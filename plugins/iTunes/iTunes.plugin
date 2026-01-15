@@ -1,21 +1,44 @@
 #!name=iTunes
-#!desc=iTunes系列解锁合集，在设置中选择需要使用的原作者脚本以使用此插件。
-#!author=chxm1023[https://github.com/chxm1023], ddgksf2013[https://github.com/ddgksf2013], Guding88[https://github.com/Guding88]
+#!desc=iTunes 会员解锁（Loon 原生多作者切换版）
+#!author=chxm1023 / ddgksf2013 / Guding88
 #!icon=https://raw.githubusercontent.com/sooyaaabo/IconLibrary/main/App/iTunes.png
 #!homepage=https://github.com/sooyaaabo/Egern
-#!date=2025-12-29 16:30
+#!loon_version=3.3.7
+#!date=2025-01-15
+
+########################
+# 参数（作者选择开关）
+########################
+
 [Argument]
 itunes_author=select, chxm1023, ddgksf2013, Guding88, tag=脚本作者, desc=选择当前生效的 iTunes 解锁脚本作者
 
+########################
+# Scripts（全部常驻）
+########################
+
 [Script]
 # chxm1023
-[iTunes]解锁会员@chxm1023 = type=http-response, pattern=^https?:\/\/buy\.itunes\.apple\.com\/verifyReceipt$, script-path=https://raw.githubusercontent.com/chxm1023/Rewrite/main/iTunes.js, requires-body=true
+iTunes_chxm1023 = type=http-response, \
+pattern=^https?:\/\/buy\.itunes\.apple\.com\/verifyReceipt$, \
+script-path=https://raw.githubusercontent.com/chxm1023/Rewrite/main/iTunes.js, \
+requires-body=true, timeout=30
 
 # ddgksf2013
-[iTunes]解锁会员@ddgksf2013 = type=http-response, pattern=^https?:\/\/buy\.itunes\.apple\.com\/verifyReceipt$, script-path=https://raw.githubusercontent.com/SXIE-ai/Loon/refs/heads/main/plugins/iTunes/iTunes2.js, requires-body=true
+iTunes_ddgksf2013 = type=http-response, \
+pattern=^https?:\/\/buy\.itunes\.apple\.com\/verifyReceipt$, \
+script-path=https://raw.githubusercontent.com/SXIE-ai/Loon/refs/heads/main/plugins/iTunes/iTunes2.js, \
+requires-body=true, timeout=30
 
 # Guding88
-[iTunes]解锁会员@Guding88 = type=http-response, pattern=^https?:\/\/buy\.itunes\.apple\.com\/verifyReceipt$, script-path=https://raw.githubusercontent.com/Guding88/Script/main/APPheji_iTunes.js, requires-body=true
+iTunes_Guding88 = type=http-response, \
+pattern=^https?:\/\/buy\.itunes\.apple\.com\/verifyReceipt$, \
+script-path=https://raw.githubusercontent.com/Guding88/Script/main/APPheji_iTunes.js, \
+requires-body=true, timeout=30
 
-[MITM]
-hostname = %APPEND% buy.itunes.apple.com
+########################
+# MITM
+########################
+
+[MitM]
+hostname = buy.itunes.apple.com
