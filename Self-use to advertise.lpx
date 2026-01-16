@@ -71,60 +71,128 @@ DOMAIN,yunbusiness.ccb.com,REJECT
 DOMAIN,appgw.ddpai.com,REJECT
 
 [Rewrite]
-# 腾讯系广告
+
+# =========================
+# 腾讯系广告 / 统计 / 启动页
+# =========================
+
+# QQ / 腾讯系行为追踪统计（通用埋点）
 ^https?:\/\/btrace\.qq\.com reject-200
+
+# QQ 游戏中心按钮广告（如游戏推广入口）
 ^https?:\/\/api2\.helper\.qq\.com\/game\/buttons reject-img
+
+# QQ / QQ Live 实时消息流中的广告信息
 ^https?:\/\/lives\.l\.qq\.com\/livemsg\?sdtfrom= reject-img
+
+# QQ / QQLive 视频封面、广告图缓存
 ^https?:\/\/imgcache\.qq\.com\/qqlive\/ reject-img
+
+# 腾讯 beacon 统计分析接口（视频/广告曝光）
 ^https?:\/\/mtteve\.beacon\.qq\.com\/analytics reject-img
+
+# 腾讯视频 VMind 广告/推荐接口
 ^https?:\/\/vv\.video\.qq\.com\/getvmind\? reject-200
+
+# 腾讯地图活动广告（Touch 版本）
 ^https?:\/\/3gimg\.qq\.com\/tencentMapTouch\/app\/activity\/ reject-200
+
+# 腾讯地图启动页广告（Splash）
 ^https?:\/\/3gimg\.qq\.com\/tencentMapTouch\/splash\/ reject-200
+
+# QQ 音乐广告图片（命名含 _Ad）
 ^https?:\/\/y\.gtimg\.cn\/music\/.*?_Ad\/\d+\.png reject-img
+
+# 腾讯视频启动页广告（QQLive Splash）
 ^https?:\/\/splashqqlive\.gtimg\.com\/website\/\d{6} reject-img
+
+# QQ 空间 GDT（广点通）移动端 SDK 广告资源
 ^https?:\/\/qzonestyle\.gtimg\.cn\/qzone\/biz\/gdt\/mob\/sdk\/ios\/v2\/ reject-img
+
+# Discuz 云插件广告提示脚本
 ^https?:\/\/discuz\.gtimg\.cn\/cloud\/scripts\/discuz_tips\.js reject-img
+
+# 腾讯视频 PNG 广告资源（QQLive）
 ^https?:\/\/bla\.gtimg\.com\/qqlive\/\d{6}.+?\.png reject-img
+
+# 腾讯广告商城（gjsmall）广告素材
 ^https?:\/\/mmgr\.gtimg\.com\/gjsmall\/qiantu\/upload\/ reject-img
+
+# 腾讯广告商城 iOS 启动页广告
 ^https?:\/\/mmgr\.gtimg\.com\/gjsmall\/qqpim\/public\/ios\/splash\/.+?\/\d{4}_\d{4} reject-img
+
+# 腾讯 Bingo / 视频广告数据接口
 ^https?://bk\.bingo\.qq\.com/bk/crx/data/videoAd.*$ reject-dict
 
-# 银行广告
+
+# =========================
+# 银行类 App 启动页 / 推荐广告
+# =========================
+
+# 中信银行 App 首页广告数据（NMBFOServer）
 ^https?:\/\/wap\.bank\.ecitic\.com:6443\/NMBFOServer\/cbframework\.do\?act=CUBEPAGEDATA reject-200
+
+# 中信银行 App 启动页广告图片（32 位 hash 命名）
 ^https?:\/\/imcs\.citicbank\.com\/cloud\/([a-fA-F0-9]{32})\.(jpg|png) reject
+
+# 中信银行 App 启动页广告（按分辨率区分）
 ^https?:\/\/imcs\.citicbank\.com\/cloud\/.+(1125.+2436|1242.+2688|750.+1638|563.+1218) reject-dict
+
+# 招商银行 App 预加载广告接口（生活号）
 ^https?:\/\/mbasecc\.(bas|bcs)\.cmbchina\.com\/Edge\/api\/mlife\.clientface\.clientservice\.api\.advertiseService\/preCacheAdvertiseSec reject-dict
+
+# 招商银行 App 动态推荐 / 渲染广告数据
 ^https?:\/\/intellicc\.bas\.cmbchina\.com\/Edge\/api\/mlife\.intelli\.render\.api\.render\/getDynamicDataSec reject
+
+# 招商银行 App 广告位投放接口
 ^https?:\/\/intellicc\.bcs\.cmbchina\.com\/Edge\/api\/mlife\.intelli\.adrender\.api\.AdWork\/getAdsBySlotId reject-dict
 
-# 快递广告
+
+# =========================
+# 快递类 App 广告 / 推荐
+# =========================
+
+# 中通快递 Apollo 配置（含广告/推荐）
 ^https?:\/\/hdgateway\.zto\.com\/getApolloConfig reject-dict
+
+# 中通快递 轨迹页推荐内容
 ^https?:\/\/hdgateway\.zto\.com\/track reject-dict
+
+# 中通快递 广告信息接口
 ^https?:\/\/hdgateway\.zto\.com\/getAdInfo reject-dict
+
+# 中通快递 页面跳转广告
 ^https?:\/\/hdgateway\.zto\.com\/listJumperShow reject-dict
 
-
 [MitM]
+# ===== 中信银行 =====
 hostname = wap.bank.ecitic.com,
 imcs.citicbank.com,
+# ===== 招商银行 =====
 mbasecc.bas.cmbchina.com,
 mbasecc.bcs.cmbchina.com,
 intellicc.bas.cmbchina.com,
 intellicc.bcs.cmbchina.com,
+# ===== 腾讯统计 / 广告 =====
 btrace.qq.com,
 api2.helper.qq.com,
 *.beacon.qq.com,
 mi.gdt.qq.com,
+# ===== 腾讯视频 / QQ =====
 lives.l.qq.com,
 imgcache.qq.com,
 mtteve.beacon.qq.com,
 vv.video.qq.com,
 qt.qq.com,
+
+# ===== 腾讯地图 / QQ 音乐 / QZone =====
 3gimg.qq.com,
 y.gtimg.cn,
 splashqqlive.gtimg.com,
 qzonestyle.gtimg.cn,
 discuz.gtimg.cn,
+
+# ===== 腾讯广告素材 =====
 bla.gtimg.com,
 mmgr.gtimg.com,
 bk.bingo.qq.com
