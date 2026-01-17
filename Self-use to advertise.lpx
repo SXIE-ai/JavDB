@@ -71,6 +71,23 @@ URL-REGEX,"^https?:\/\/.+\.video\.qq\.com\/my\/ad",REJECT
 URL-REGEX,"^https?:\/\/.+\.video\.qq\.com\/my\/promotion",REJECT
 # 腾讯视频广告子域名
 DOMAIN-SUFFIX,ads.qq.com,REJECT
+# 腾讯视频：播放页 / 信息流 Banner 广告
+URL-REGEX,^https?:\/\/.+\.video\.qq\.com\/.+\/banner,REJECT
+
+# 腾讯视频：弹窗 / 浮层 / 活动 Popup 广告
+URL-REGEX,^https?:\/\/.+\.video\.qq\.com\/.+\/popup,REJECT
+
+# QQ / 腾讯系：游戏中心推广与跳转
+DOMAIN-SUFFIX,gamecenter.qq.com,REJECT
+
+# 腾讯系：数字营销 / 广告投放统计域名（部分信息流、推广）
+DOMAIN,szmg.qq.com,REJECT
+
+DOMAIN,szmg.qq.com,REJECT
+URL-REGEX,"^https?:\/\/.+\.video\.qq\.com\/.+\/banner",REJECT
+URL-REGEX,"^https?:\/\/.+\.video\.qq\.com\/.+\/popup",REJECT
+DOMAIN-SUFFIX,gamecenter.qq.com,REJECT
+
 # 银行
 # 中信银联数据分析上报
 DOMAIN,analytics.95516.com,REJECT
