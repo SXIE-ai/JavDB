@@ -9,8 +9,8 @@
 
 [Rule]
 # QQ 音乐开屏 / 资源
-DOMAIN,music.y.qq.com,REJECT
-DOMAIN,imgcache.qq.com,REJECT
+DOMAIN,music.y.qq.com,REJECT,给你一巴掌(･ω･)✋
+DOMAIN,imgcache.qq.com,REJECT,给你一巴掌(✋°д°)
 # QQ 音乐上报 / 统计
 DOMAIN,wnsmusic.qq.com,REJECT
 DOMAIN,monitor.music.qq.com,REJECT
