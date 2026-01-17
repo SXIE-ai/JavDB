@@ -54,6 +54,21 @@ DOMAIN,amsweb-cdn-gz-1258344696.file.myqcloud.com,REJECT
 DOMAIN,wallpaper-1258344696.file.myqcloud.com,REJECT
 # IP
 IP-CIDR,120.222.240.171/32,REJECT,no-resolve
+
+# ===== 腾讯视频 · 播放页 / 个人中心广告 =====
+
+# 播放页信息流 / 底部广告
+URL-REGEX,"^https?:\/\/.+\.video\.qq\.com\/.+\/ad",REJECT
+URL-REGEX,"^https?:\/\/.+\.video\.qq\.com\/.+\/ads",REJECT
+URL-REGEX,"^https?:\/\/.+\.video\.qq\.com\/.+\/banner",REJECT
+
+# 选集页广告模块
+URL-REGEX,"^https?:\/\/.+\.video\.qq\.com\/.+\/recommend",REJECT
+
+# 个人中心广告
+URL-REGEX,"^https?:\/\/.+\.video\.qq\.com\/user\/ad",REJECT
+URL-REGEX,"^https?:\/\/.+\.video\.qq\.com\/my\/ad",REJECT
+URL-REGEX,"^https?:\/\/.+\.video\.qq\.com\/my\/promotion",REJECT
 # 腾讯视频广告子域名
 DOMAIN-SUFFIX,ads.qq.com,REJECT
 # 银行
