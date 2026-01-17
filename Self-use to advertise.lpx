@@ -42,7 +42,7 @@ DOMAIN,us.l.qq.com,REJECT
 DOMAIN,tangram.e.qq.com,REJECT
 DOMAIN,xs.gdt.qq.com,REJECT
 # 广告平台后缀
-DOMAIN-SUFFIX,gdt.qq.com,REJECT
+
 DOMAIN-SUFFIX,v.gdt.qq.com,REJECT
 DOMAIN-SUFFIX,e.qq.com,REJECT
 DOMAIN-SUFFIX,rqd.qq.com,REJECT
