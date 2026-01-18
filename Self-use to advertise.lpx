@@ -87,9 +87,6 @@ DOMAIN,vv.video.qq.com,REJECT
 # 腾讯视频：播放页接口 / 信息流数据接口（广告混合）
 DOMAIN,i.video.qq.com,REJECT
 
-# 腾讯视频：备用播放节点 / 核心视频 CDN（必须直连）
-DOMAIN,vv6.video.qq.com,REJECT
-
 # 腾讯视频：播放页弹窗 / 浮层广告
 URL-REGEX,^https?:\/\/.+\.video\.qq\.com\/.+\/popup,REJECT
 
