@@ -18,7 +18,7 @@ enable-switch = switch,true,tag=启用解锁,desc=是否启用iTunes验证解锁
 # chxm1023
 http-response pattern=^https?:\/\/buy\.itunes\.apple\.com\/verifyReceipt$ script-path=https://raw.githubusercontent.com/chxm1023/Rewrite/main/iTunes.js, requires-body=true, tag=解锁会员@chxm1023, enabled=true
 # ddgksf2013
-http-response pattern=^https?:\/\/buy\.itunes\.apple\.com\/verifyReceipt$ script-path=https://loon.103516.xyz/Script/iTunes/iTunes-ddgksf2013.js, requires-body=true, tag=解锁会员@ddgksf2013, enabled=true
+http-response pattern=^https?:\/\/buy\.itunes\.apple\.com\/verifyReceipt$ script-path=https://raw.githubusercontent.com/SXIE-ai/Loon/refs/heads/main/plugins/iTunes/iTunes2.js, requires-body=true, tag=解锁会员@ddgksf2013, enabled=true
 # Guding88
 http-response pattern=^https?:\/\/buy\.itunes\.apple\.com\/verifyReceipt$ script-path=https://raw.githubusercontent.com/Guding88/Script/main/APPheji_iTunes.js, requires-body=true, tag=解锁会员@Guding88, enabled=true
 
