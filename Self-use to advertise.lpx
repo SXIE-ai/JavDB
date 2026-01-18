@@ -204,34 +204,35 @@ DOMAIN,appgw.ddpai.com,REJECT
 ^https?:\/\/hdgateway\.zto\.com\/listJumperShow reject-dict
 
 [MitM]
+
+hostname = wap.bank.ecitic.com,imcs.citicbank.com,mbasecc.bas.cmbchina.com,intellicc.bcs.cmbchina.com,btrace.qq.com,api2.helper.qq.com,*.beacon.qq.com,mi.gdt.qq.com,lives.l.qq.com,imgcache.qq.com,mtteve.beacon.qq.com,vv.video.qq.com,qt.qq.com,3gimg.qq.com,y.gtimg.cn,splashqqlive.gtimg.com,qzonestyle.gtimg.cn,discuz.gtimg.cn,bla.gtimg.com,mmgr.gtimg.com,bk.bingo.qq.com
+
 # ===== 中信银行 =====
-hostname = wap.bank.ecitic.com,
-imcs.citicbank.com,
+# hostname = wap.bank.ecitic.com,
+# imcs.citicbank.com,
 # ===== 招商银行 =====
-mbasecc.bas.cmbchina.com,
-mbasecc.bcs.cmbchina.com,
-intellicc.bas.cmbchina.com,
-intellicc.bcs.cmbchina.com,
+# mbasecc.bcs.cmbchina.com,
+# intellicc.bcs.cmbchina.com,
 # ===== 腾讯统计 / 广告 =====
-btrace.qq.com,
-api2.helper.qq.com,
-*.beacon.qq.com,
-mi.gdt.qq.com,
+# btrace.qq.com,
+# api2.helper.qq.com,
+# *.beacon.qq.com,
+# mi.gdt.qq.com,
 # ===== 腾讯视频 / QQ =====
-lives.l.qq.com,
-imgcache.qq.com,
-mtteve.beacon.qq.com,
-vv.video.qq.com,
-qt.qq.com,
+# lives.l.qq.com,
+# imgcache.qq.com,
+# mtteve.beacon.qq.com,
+# vv.video.qq.com,
+# qt.qq.com,
 
 # ===== 腾讯地图 / QQ 音乐 / QZone =====
-3gimg.qq.com,
-y.gtimg.cn,
-splashqqlive.gtimg.com,
-qzonestyle.gtimg.cn,
-discuz.gtimg.cn,
+# 3gimg.qq.com,
+# y.gtimg.cn,
+# splashqqlive.gtimg.com,
+# qzonestyle.gtimg.cn,
+# discuz.gtimg.cn,
 
 # ===== 腾讯广告素材 =====
-bla.gtimg.com,
-mmgr.gtimg.com,
-bk.bingo.qq.com
+# bla.gtimg.com,
+# mmgr.gtimg.com,
+# bk.bingo.qq.com
