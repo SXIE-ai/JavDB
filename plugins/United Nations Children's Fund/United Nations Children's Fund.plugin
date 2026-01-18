@@ -51,14 +51,14 @@ http-response ^https?:\/\/[^\/]+\/api\/(account\/(IndexDetail|IsVip)|cartoon\/Vi
 
 
 [MitM]
+# pear
+*.baidu.com2.club, *.pearkin.com, *.pearhot.com, lite.pearhot.com, souhu.mett.me,
 # 小狐狸
 hostname = *.xhlld076.shop, *.xhlsc006.shop,
 # JVID
 *.201.224:2002, *.cdv6x4x6.cc, *.cdv6x4x6.cn, *.dgpes3dp.cc, *.uywhqqxp.cc,
 # 足控社
-1zher0st.504824.xyz, s1jyc4asdr14nsa.504824.xyz, suning.679134.xyz, b8u1lvlb.504867.xyz, umcuy46v9yr3gn4.504843.xyz, *.504*.xyz, 5sfc4hgy.504832.xyz,
-# pear
-*.baidu.com2.club, *.pearkin.com, *.pearhot.com, lite.pearhot.com, souhu.mett.me
+1zher0st.504824.xyz, s1jyc4asdr14nsa.504824.xyz, suning.679134.xyz, b8u1lvlb.504867.xyz, umcuy46v9yr3gn4.504843.xyz, *.504*.xyz, 5sfc4hgy.504832.xyz
 
 
 
