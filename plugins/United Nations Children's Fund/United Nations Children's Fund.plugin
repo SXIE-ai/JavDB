@@ -22,6 +22,8 @@ zks = switch,false,tag=足控社
 [Rule]
 # 小狐狸
 URL-REGEX,^https?:\/\/xhlld.*\.shop\/view\/(adList|getVideoInfoAdList),REJECT
+
+[Rewrite]
 # pear
 ^https?:\/\/[^\/]+\/api\/movie\/ShopProduct - reject-dict
 ^https?:\/\/[^\/]+\/api\/adv\/index - reject-dict
