@@ -55,7 +55,56 @@ DOMAIN,wallpaper-1258344696.file.myqcloud.com,REJECT
 # IP
 IP-CIDR,120.222.240.171/32,REJECT,no-resolve
 
-# ===== 腾讯视频 · 播放页 / 个人中心广告 =====
+
+# ===== 腾讯视频广告 / 追踪 / 数据采集拦截 =====
+
+# 广点通广告系统（核心广告域名）
+DOMAIN,adsmind.gdtimg.com,REJECT
+
+# 腾讯视频播放信息 / 统计上报
+DOMAIN,info4.video.qq.com,REJECT
+DOMAIN,info6.video.qq.com,REJECT
+
+# 腾讯视频 iOS 推送 / 广告唤醒
+DOMAIN,ios.video.mpush.qq.com,REJECT
+
+# 广点通广告素材与请求
+DOMAIN,pgdt.gtimg.cn,REJECT
+
+# 腾讯 TPNS 推送（广告 & 运营推送）
+DOMAIN,tpns.qq.com,REJECT
+
+# 腾讯视频广告/统计子域
+DOMAIN,vv6.video.qq.com,REJECT
+
+# 广点通整站广告域名
+DOMAIN-SUFFIX,gdt.qq.com,REJECT
+
+# 腾讯广告跳转/统计短链
+DOMAIN-SUFFIX,l.qq.com,REJECT
+
+# ===== 腾讯视频追踪 / Trace 域名 =====
+
+DOMAIN-KEYWORD,trace.qq.com,REJECT
+DOMAIN-KEYWORD,trace.video.qq.com,REJECT
+
+# ===== 已知广告 IP（直连兜底）=====
+
+IP-CIDR,47.110.187.87/32,REJECT,no-resolve
+
+# ===== 腾讯视频 VMind / DefaultTS 广告流（关键规则）=====
+
+# 直连 IP + defaultts / vmind 广告视频流
+URL-REGEX,"^http:\/\/[\d\.:]*\/?(defaultts\.tc|vmind\.qqvideo\.tc|finderpdd\.video)\.qq\.com\/\w+",REJECT
+# ↑ 腾讯视频广告视频片段（常见于开屏/插播）
+
+# APD CDN 包装的 vmind 广告流
+URL-REGEX,"^http:\/\/apd-vlive\.apdcdn\.tc\.qq\.com\/vmind\.qqvideo\.tc\.qq\.com\/\w+",REJECT
+# ↑ CDN 二次封装的广告视频请求
+
+# SMTCDNS CDN 下的 defaultts / omts / vmind 广告流
+URL-REGEX,"^http:\/\/apd-\w+\.v\.smtcdns\.com\/(defaultts|omts|vmind\.qqvideo)\.tc\.qq\.com\/\w+",REJECT
+# ↑ 腾讯视频广告 CDN 变种路径
 
 # 播放页信息流 / 底部广告
 URL-REGEX,"^https?:\/\/.+\.video\.qq\.com\/.+\/ad",REJECT
@@ -111,6 +160,9 @@ DOMAIN,appgw.ddpai.com,REJECT
 # =========================
 # 腾讯系广告 / 统计 / 启动页
 # =========================
+
+^https?:\/\/vv\.video\.qq\.com\/(diff|get)vmind reject-dict
+# ↑ 腾讯视频 vmind 广告接口（diff/get），用于广告策略下发
 
 # QQ / 腾讯系行为追踪统计（通用埋点）
 ^https?:\/\/btrace\.qq\.com reject-200
