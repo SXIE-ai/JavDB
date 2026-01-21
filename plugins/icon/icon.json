@@ -1,6 +1,6 @@
 
 {"name": "自用图标库",
- "description": "收集互联网公开图标文件，版权属于原作者和商标持有人。", 
+ "description": "自用收集 loon 图标，全部为 120px 如有侵权请联系删除，版权属于原作者和商标持有人。", 
  "icons": [
  {"name": "loon1",
   "url": "https://raw.githubusercontent.com/SXIE-ai/Loon/refs/heads/main/plugins/icon/icons/loon1.PNG"},
@@ -62,3 +62,4 @@
  {"name": "Loon11",
   "url": "https://raw.githubusercontent.com/chxm1023/Script_X/main/icon/Loon/Loon_11.png"},
    
+ ]
